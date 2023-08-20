@@ -17,3 +17,21 @@
   (dotimes (number 10)
     (vector-push-extend (* number 3) my-cool-vector))
   (print my-cool-vector))
+
+;; Java wrappered notes
+
+; note: (not X) where X is a (func) or boolean
+(setf *random-state* (make-random-state true))
+
+; for (int number = 10; number < 10; number++) {scope}
+(dotimes (number 10)
+  ; if (1 == random(0,1)) {scope}
+  (if (eq 1 (random 2))
+      (print "cool")
+  ;else
+      (print "not cool")
+  )
+  (if (>= 10 (random 50))
+      (print "test"))
+)
+
