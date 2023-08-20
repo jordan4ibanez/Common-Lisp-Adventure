@@ -1,1 +1,4 @@
-(format t "hi there~%")
+(defconstant false nil)
+(defconstant true t)
+(defun main()
+    (format t "hi there~%"))
