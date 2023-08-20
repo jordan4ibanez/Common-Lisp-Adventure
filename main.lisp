@@ -56,4 +56,13 @@
   ;else
       (print "not cool")
   )
+  (if (>= 10 (random 50))
+      (print "test"))
 )
+
+;;hmmm very interesting, we can also just do work on things in global state like C.
+;; REPL really doesn't like resetting the vars lmao. 
+(defvar *global-thing* 1.0)
+(dotimes (number 100)
+  (setq *global-thing* (* *global-thing* 1.1))
+  (print *global-thing*))
