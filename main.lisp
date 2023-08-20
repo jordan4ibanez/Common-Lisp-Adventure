@@ -1,25 +1,17 @@
 (defconstant false nil)
 (defconstant true t)
 
-; (defun testing()
-;   (let ((x 5))
-;     (list x x x x x x)))
-
-; (let ((keys '(a b c d e f))
-;       (elements '(1 2 3 4 5 6)))
-;   (print "test"))
-
-; (let ((cool-test '(:a "ye" :b "neh")))
-;       (print (getf cool-test :a)))
+(defun yes()
+  true)
+(defun no()
+  false)
 
 (defun make-cd (title artist rating ripped)
   (list :title title :artist artist :rating rating :ripped ripped))
 
-; (print (make-cd "all star" "smash mouth" 5.0 true))
-
 (defvar *db* nil)
 
-(defun push-record(cd)
+(defun add-record(cd)
   (push cd *db*))
 
 (defun dump-db()
@@ -29,8 +21,29 @@
 (defun clear-db()
   (setq *db* nil))
 
-(push-record (make-cd "come as you are" "nirvana" 10 true))
+(add-record (make-cd "come as you are" "nirvana" 10 true))
 
 (dump-db)
 
 (clear-db)
+
+(defun prompt-read(prompt)
+  (format *query-io* "~a:" prompt)
+  (force-output *query-io*)
+  (read-line *query-io*))
+
+(defun prompt-for-cd()
+  (make-cd
+    (prompt-read "Title")
+    (prompt-read "Artist")
+    (or (parse-integer (prompt-read "Rating") :junk-allowed true) 0)
+    (y-or-n-p "Ripped")))
+
+(defun add-cds()
+  (loop (add-record (prompt-for-cd))
+        (if (not (y-or-n-p "Another? ")) (return))))
+
+; (add-cds)
+
+;;todo: figure out how to do an else block lmao
+(if (not (yes)) (print "cool"))
