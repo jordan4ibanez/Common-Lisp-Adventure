@@ -3,7 +3,7 @@
     "command": "sbcl",
     "args": [
         "--script",
-        "build.lisp"
+        "main.lisp"
     ],
     "options": {
         "cwd": "${workspaceRoot}"
