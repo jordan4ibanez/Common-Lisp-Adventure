@@ -64,5 +64,5 @@
 ;; REPL really doesn't like resetting the vars lmao. 
 (defvar *global-thing* 1.0)
 (dotimes (number 100)
-  (setq *global-thing* (* *global-thing* 1.1))
+  (setq *global-thing* (+ *global-thing* 1.1))
   (print *global-thing*))
