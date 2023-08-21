@@ -63,7 +63,7 @@
 
 ; ; (print *db*)
 ; ; (print "ahhhhhhhhhhhhhhh")
-; ; (print (remove-if-not 
+; ; (print (remove-if-not
 ; ;     #'(lambda (cd) (equal (getf cd :artist) "nirvana")) *db*))
 
 ; ; (remove-if-not #'(lambda (cd) (equal (getf cd :artist) "nirvana")) *db*)
@@ -118,17 +118,20 @@
 ; (add-cds)
 
 ; (defvar *test* '(1 2 3 4 5 6 7 8))
-; (mapcar 
+; (mapcar
 ;     #'(lambda (row)
 ;         (print row)
 ;         row) *test*)
 
-;; These need to be auto loaded...somehow?
-    
-(ql:quickload :cl-glfw3)
-(ql:quickload :cl-opengl)
-(ql:quickload :trivial-main-thread)
-(use-package '(:glfw :cl :alexandria :trivial-main-thread :gl :cl-opengl))
+;; Auto load all this when compiling.
+(eval-when (:compile-toplevel)
+  (ql:quickload :cl-glfw3)
+  (use-package :cl-glfw3)
+  (ql:quickload :cl-opengl)
+  (use-package :cl-opengl)
+  (ql:quickload :trivial-main-thread)
+  (use-package :trivial-main-thread))
+; (use-package '(:glfw :cl :alexandria :trivial-main-thread :gl :cl-opengl))
 
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
   (declare (ignore window scancode mod-keys))
