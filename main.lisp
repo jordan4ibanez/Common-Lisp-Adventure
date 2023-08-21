@@ -21,11 +21,10 @@
 (defun clear-db()
   (setq *db* nil))
 
-(add-record (make-cd "come as you are" "nirvana" 10 true))
 
-(dump-db)
+; (dump-db)
 
-(clear-db)
+; (clear-db)
 
 (defun prompt-read(prompt)
   (format *query-io* "~a:" prompt)
@@ -45,3 +44,47 @@
 
 ; (add-cds)
 
+(defun save-db(filename)
+  (with-open-file(out filename :direction :output :if-exists :supersede)
+    (with-standard-io-syntax (print *db* out))))
+
+; (save-db "testing")
+
+(defun load-db (filename)
+  (with-open-file (in filename)
+    (with-standard-io-syntax (setf *db* (read in)))))
+
+; (load-db "testing")
+
+(print "starting")
+
+(add-record (make-cd "come as you are" "nirvana" 10 true))
+(add-record (make-cd "come as you are" "nirvana" 10 true))
+
+; (print *db*)
+; (print "ahhhhhhhhhhhhhhh")
+; (print (remove-if-not 
+;     #'(lambda (cd) (equal (getf cd :artist) "nirvana")) *db*))
+
+; (remove-if-not #'(lambda (cd) (equal (getf cd :artist) "nirvana")) *db*)
+
+(defun select (selector-fn)
+  (remove-if-not selector-fn *db*))
+
+; (defun artist-selector (artist))
+; (select #'(lambda (cd) (equal (getf cd :artist) "Dixie Chicks")))
+
+; (defun my-function(&key first second third)
+;   (if first (print first))
+;   (if second (print second))
+;   (if third (print third)))
+
+; (my-function :first 123)
+
+(defun where (&key title artist rating (ripped false ripped-p))
+  #'(lambda (cd)
+      (and
+       (if title    (equal (getf cd :title)  title)  true)
+       (if artist   (equal (getf cd :artist) artist) true)
+       (if rating   (equal (getf cd :rating) rating) true)
+       (if ripped-p (equal (getf cd :ripped) ripped) true))))
