@@ -124,6 +124,10 @@
 ;         row) *test*)
 
 ;; These need to be auto loaded...somehow?
+    
+(ql:quickload :cl-glfw3)
+(ql:quickload :cl-opengl)
+(ql:quickload :trivial-main-thread)
 (use-package '(:glfw :cl :alexandria :trivial-main-thread :gl :cl-opengl))
 
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
@@ -135,7 +139,8 @@
   (gl:clear :color-buffer)
   (gl:with-pushed-matrix
     (gl:color 1 1 1)
-    (gl:rect -25 -25 25 25)))
+    (gl:rect -25 -25 25 25))
+  (print "wurk"))
 
 (defun set-viewport (width height)
   (gl:viewport 0 0 width height)
@@ -149,6 +154,9 @@
   (declare (ignore window))
   (set-viewport w h))
 
+(defun dynamic()
+  (format true "dynamic"))
+
 (defun basic-window-example ()
   ;; Graphics calls on OS X must occur in the main thread
   (with-body-in-main-thread ()
@@ -160,7 +168,10 @@
       (set-viewport 600 400)
       (loop until (window-should-close-p)
          do (render)
+         do (dynamic)
          do (swap-buffers)
          do (poll-events)))))
 
-(basic-window-example)
+(defun run()
+  (sb-int:with-float-traps-masked (:invalid)
+    (basic-window-example)))
