@@ -1,2 +1,0 @@
-(defpackage #:game
-  (:use #:cl #:glfw #:alexandria #:trivial-main-thread))
