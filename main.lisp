@@ -96,10 +96,11 @@
       (gl:clear-color 0 0 0 0)
       (set-viewport 600 400)
       (loop until (window-should-close-p)
+        do (poll-events)
         do (game-update)
         do (render)
-        do (swap-buffers)
-        do (poll-events)))))
+        do (swap-buffers)))))
+
 
 (defun run()
   (sb-int:with-float-traps-masked (:invalid)
