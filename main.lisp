@@ -96,8 +96,8 @@
       (gl:clear-color 0 0 0 0)
       (set-viewport 600 400)
       (loop until (window-should-close-p)
-        do (render)
         do (game-update)
+        do (render)
         do (swap-buffers)
         do (poll-events)))))
 
