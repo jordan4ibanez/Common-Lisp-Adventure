@@ -85,6 +85,12 @@
 (defun game-update()
   (*calculate-delta-time*))
 
+;; This is run every frame of the game.
+(defun game-tick-procedure()
+  (poll-events)
+  (game-update)
+  (render)
+  (swap-buffers))
 
 (defun main-loop()
   ;; Graphics calls on OS X must occur in the main thread
@@ -96,10 +102,7 @@
       (gl:clear-color 0 0 0 0)
       (set-viewport 600 400)
       (loop until (window-should-close-p)
-        do (poll-events)
-        do (game-update)
-        do (render)
-        do (swap-buffers)))))
+        do (game-tick-procedure)))))
 
 
 (defun run()
