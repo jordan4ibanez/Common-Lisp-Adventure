@@ -49,7 +49,7 @@
 (defun render ()
   (gl:clear :color-buffer)
   (gl:with-pushed-matrix
-    (gl:color 1 1 1)
+    (gl:color 0.1 0.1 0.1)
     (gl:rect -25 -25 25 25)))
 
 (defun set-viewport (width height)
@@ -67,18 +67,31 @@
 
 ;; Simple time calculation. Also wrappers in FPS calculation.
 ;; glfwGetTime() is system independent so this needs to be tested on Windows. :T
-(defvar old-time (glfw:get-time))
-(defvar *delta-time*)
-(defvar fps-accumulator 0)
+(defvar *old-time* (glfw:get-time))
+(defvar *delta-time* 0.0)
+(defvar *frame-time-accumulator* 0.0)
+(defvar *fps-accumulator* 0)
+(defvar *fps* 0)
 
-
-(defun calculate-delta-time()
-  (let ((current-time (glfw:get-time)))
-    (setq *delta-time* (- current-time old-time))
-    (setq old-time current-time)))
-
+;; Wrapper function because mutability of *delta-time* is probably extremely bad.
 (defun get-delta()
   *delta-time*)
+
+;; Simple FPS calculation procedure.
+(defun *calculate-fps*()
+  (setq *frame-time-accumulator* (+ *frame-time-accumulator* (get-delta)))
+  (setq *fps-accumulator* (+ *fps-accumulator* 1))
+  (cond ((>= *frame-time-accumulator* 1.0)
+         (setq *fps* *fps-accumulator*)
+         (setq *fps-accumulator* 0)
+         (setq *frame-time-accumulator* (- *frame-time-accumulator* 1.0)))))
+
+;; Don't use this anywhere besides in update portion of main loop.
+(defun *calculate-delta-time*()
+  (let ((current-time (glfw:get-time)))
+    (setq *delta-time* (- current-time *old-time*))
+    (setq *old-time* current-time))
+  (*calculate-fps*))
 
 
   ; (setq counter (+ counter 1))
@@ -106,7 +119,7 @@
       (loop until (window-should-close-p)
         do (render)
         ; do (dynamic)
-        do (calculate-delta-time)
+        do (*calculate-delta-time*)
         do (swap-buffers)
         do (poll-events)))))
 
