@@ -14,14 +14,20 @@
 
 ;; Auto load all this when compiling.
 (eval-when (:compile-toplevel)
-  (ql:quickload :cl-glfw3)
-  (use-package :cl-glfw3)
-  (ql:quickload :cl-opengl)
-  (use-package :cl-opengl)
-  (ql:quickload :trivial-main-thread)
-  (use-package :trivial-main-thread)
-  (ql:quickload :local-time)
-  (use-package :local-time))
+           ;; As you can see, I have given up on QL local files.
+           (load "game-things/test.lisp")
+           (use-package :test-package)
+           (ql:quickload :cl-glfw3)
+           (use-package :cl-glfw3)
+           (ql:quickload :cl-opengl)
+           (use-package :cl-opengl)
+           (ql:quickload :trivial-main-thread)
+           (use-package :trivial-main-thread)
+           (ql:quickload :local-time)
+           (use-package :local-time))
+
+(test:test-function)
+
 
 
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
@@ -78,8 +84,6 @@
     (setq *delta-time* (- current-time *old-time*))
     (setq *old-time* current-time))
   (*calculate-fps*))
-
-
 
 ;; Game update function.
 (defun game-update()
