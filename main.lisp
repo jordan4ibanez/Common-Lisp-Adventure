@@ -6,122 +6,25 @@
 (defun no()
   false)
 
-; (defun make-cd (title artist rating ripped)
-;   (list :title title :artist artist :rating rating :ripped ripped))
+;; Pushes a new item to the end of a list.
+(defun push-last(the-item the-listy)
+  (push the-item (cdr (last the-listy))))
 
-; (defvar *db* nil)
+(defparameter *repl-output* *standard-output*)
 
-; (defun add-record(cd)
-;   (push cd *db*))
+;; Outputs to the REPL terminal.
+; (defun printf(any)
+;   (print any *repl-output*))
+;
+; ;; Automatically formats output.
+; (defun print-format(any)
+;   (format *repl-output* any))
+;
+; ;; Print with a "/n".
+; (defun println(&rest args)
+;   (push-last "~%" args)
+;   (print-format(apply #'concatenate 'string args)))
 
-; (defun dump-db()
-;   (dolist (cd *db*)
-;     (format true "~{~a:~10t~a~%~}~%" cd)))
-
-; (defun clear-db()
-;   (setq *db* nil))
-
-
-; ; (dump-db)
-
-; ; (clear-db)
-
-; (defun prompt-read(prompt)
-;   (format *query-io* "~a:" prompt)
-;   (force-output *query-io*)
-;   (read-line *query-io*))
-
-; (defun prompt-for-cd()
-;   (make-cd
-;     (prompt-read "Title")
-;     (prompt-read "Artist")
-;     (or (parse-integer (prompt-read "Rating") :junk-allowed true) 0)
-;     (y-or-n-p "Ripped")))
-
-; (defun add-cds()
-;   (loop (add-record (prompt-for-cd))
-;         (if (not (y-or-n-p "Another? ")) (return))))
-
-; ; (add-cds)
-
-; (defun save-db(filename)
-;   (with-open-file(out filename :direction :output :if-exists :supersede)
-;     (with-standard-io-syntax (print *db* out))))
-
-; ; (save-db "testing")
-
-; (defun load-db (filename)
-;   (with-open-file (in filename)
-;     (with-standard-io-syntax (setf *db* (read in)))))
-
-; ; (load-db "testing")
-
-; (print "starting")
-
-; (add-record (make-cd "come as you are" "nirvana" 10 true))
-; (add-record (make-cd "come as you are" "nirvana" 10 true))
-
-; ; (print *db*)
-; ; (print "ahhhhhhhhhhhhhhh")
-; ; (print (remove-if-not
-; ;     #'(lambda (cd) (equal (getf cd :artist) "nirvana")) *db*))
-
-; ; (remove-if-not #'(lambda (cd) (equal (getf cd :artist) "nirvana")) *db*)
-
-; ; (defun select (selector-fn)
-; ;   (remove-if-not selector-fn *db*))
-
-; ; (defun artist-selector (artist))
-; ; (select #'(lambda (cd) (equal (getf cd :artist) "Dixie Chicks")))
-
-; ; (defun my-function(&key first second third)
-; ;   (if first (print first))
-; ;   (if second (print second))
-; ;   (if third (print third)))
-
-; ; (my-function :first 123)
-
-; (defun where (&key title artist rating (ripped false ripped-p))
-;   #'(lambda (cd)
-;       (and
-;        (if title    (equal (getf cd :title)  title)  true)
-;        (if artist   (equal (getf cd :artist) artist) true)
-;        (if rating   (equal (getf cd :rating) rating) true)
-;        (if ripped-p (equal (getf cd :ripped) ripped) true))))
-
-; ; (defun select-by-artist (artist)
-; ;   (remove-if-not
-; ;       #'(lambda (cd) (equal (getf cd :artist) artist))
-; ;     *db*))
-
-; (defun select (selector-fn)
-;   (remove-if-not selector-fn *db*))
-
-
-; ; (print (select (lambda (cd) (equal (getf cd :artist) "nirvana"))))
-
-; (defun update (selector-fn &key title artist rating (ripped nil ripped-p))
-;   (setf *db*
-;     (mapcar
-;         #'(lambda (row)
-;             (when (funcall selector-fn row)
-;                   (if title    (setf (getf row :title)  title))
-;                   (if artist   (setf (getf row :artist) artist))
-;                   (if rating   (setf (getf row :rating) rating))
-;                   (if ripped-p (setf (getf row :ripped) ripped)))
-;             row) *db*)))
-
-; (update (where :artist "pantera") :rating 1000)
-
-; (dump-db)
-
-; (add-cds)
-
-; (defvar *test* '(1 2 3 4 5 6 7 8))
-; (mapcar
-;     #'(lambda (row)
-;         (print row)
-;         row) *test*)
 
 ;; Auto load all this when compiling.
 (eval-when (:compile-toplevel)
@@ -130,20 +33,24 @@
   (ql:quickload :cl-opengl)
   (use-package :cl-opengl)
   (ql:quickload :trivial-main-thread)
-  (use-package :trivial-main-thread))
-; (use-package '(:glfw :cl :alexandria :trivial-main-thread :gl :cl-opengl))
+  (use-package :trivial-main-thread)
+  (ql:quickload :local-time)
+  (use-package :local-time))
+
 
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
   (declare (ignore window scancode mod-keys))
   (when (and (eq key :escape) (eq action :press))
-    (set-window-should-close)))
+    (set-window-should-close))
+  (when (and (eq key :e) (eq action :press))
+    (print "cool")))
+
 
 (defun render ()
   (gl:clear :color-buffer)
   (gl:with-pushed-matrix
     (gl:color 1 1 1)
-    (gl:rect -25 -25 25 25))
-  (print "wurk"))
+    (gl:rect -25 -25 25 25)))
 
 (defun set-viewport (width height)
   (gl:viewport 0 0 width height)
@@ -157,8 +64,35 @@
   (declare (ignore window))
   (set-viewport w h))
 
-(defun dynamic()
-  (format true "dynamic"))
+
+;; Simple time calculation. Also wrappers in FPS calculation.
+;; glfwGetTime() is system independent so this needs to be tested on Windows. :T
+(defvar old-time (glfw:get-time))
+(defvar *delta-time*)
+(defvar fps-accumulator 0)
+
+
+(defun calculate-delta-time()
+  (let ((current-time (glfw:get-time)))
+    (setq *delta-time* (- current-time old-time))
+    (setq old-time current-time)))
+
+(defun get-delta()
+  *delta-time*)
+
+
+  ; (setq counter (+ counter 1))
+  ; (if (> counter 60) (setq counter 0))
+  ;
+  ; (cond ((eq 60 counter)
+  ;        (print "SETTING")))
+  ; (cond ((eq 30 counter)
+  ;        (print "something else"))))
+
+
+
+
+
 
 (defun basic-window-example ()
   ;; Graphics calls on OS X must occur in the main thread
@@ -170,11 +104,14 @@
       (gl:clear-color 0 0 0 0)
       (set-viewport 600 400)
       (loop until (window-should-close-p)
-         do (render)
-         do (dynamic)
-         do (swap-buffers)
-         do (poll-events)))))
+        do (render)
+        ; do (dynamic)
+        do (calculate-delta-time)
+        do (swap-buffers)
+        do (poll-events)))))
 
 (defun run()
   (sb-int:with-float-traps-masked (:invalid)
     (basic-window-example)))
+
+(run)
