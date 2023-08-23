@@ -1,3 +1,19 @@
+;; Auto load all this when compiling.
+(eval-when (:compile-toplevel)
+           ;; Load all remote systems/packages before we step into local.
+           (use-package :test-package)
+           (ql:quickload :cl-glfw3)
+           (use-package :cl-glfw3)
+           (ql:quickload :cl-opengl)
+           (use-package :cl-opengl)
+           (ql:quickload :trivial-main-thread)
+           (use-package :trivial-main-thread)
+           (ql:quickload :local-time)
+           (use-package :local-time)
+           ;; Now step into local packages.
+           (load "game-packages/test.lisp"))
+
+;; These should probably be available to the local packages.
 (defconstant false nil)
 (defconstant true t)
 
@@ -11,23 +27,6 @@
   (push the-item (cdr (last the-listy))))
 
 (defparameter *repl-output* *standard-output*)
-
-;; Auto load all this when compiling.
-(eval-when (:compile-toplevel)
-           ;; As you can see, I have given up on QL local files.
-           (load "game-packages/test.lisp")
-           (use-package :test-package)
-           (ql:quickload :cl-glfw3)
-           (use-package :cl-glfw3)
-           (ql:quickload :cl-opengl)
-           (use-package :cl-opengl)
-           (ql:quickload :trivial-main-thread)
-           (use-package :trivial-main-thread)
-           (ql:quickload :local-time)
-           (use-package :local-time))
-
-(test:test-function)
-
 
 
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
