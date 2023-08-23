@@ -33,10 +33,13 @@
   (gl:matrix-mode :modelview)
   (gl:load-identity))
 
-;; You have to reload the game to make this re-initialize unfortunately.
+
+;; (Code generator) You have to reload the game to make this re-initialize unfortunately.
 (def-window-size-callback update-viewport (window w h)
   (declare (ignore window))
+  (pass-through-update-viewport w h))
+
+;; So we shove it into a custom thing WOOOO!
+(defun pass-through-update-viewport(w h)
   (format true "window resized to ~a, ~a~%" w h)
   (set-viewport w h))
-
-(use-package :window)

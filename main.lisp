@@ -7,12 +7,13 @@
            (use-package :cl-opengl)
            (ql:quickload :trivial-main-thread)
            (use-package :trivial-main-thread)
-           ;; Now step into local packages.
+            ;; Now step into local packages.
            (load "game-packages/constants.lisp")
            (use-package :constants)
            (load "game-packages/test.lisp")
            (use-package :test-package)
-           (load "game-packages/window.lisp"))
+           (load "game-packages/window.lisp")
+           (use-package :window))
 
 
 ;; Pushes a new item to the end of a list.
