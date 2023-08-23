@@ -34,6 +34,9 @@
 (defun get-delta()
   *delta-time*)
 
+(defun get-fps()
+  *fps*)
+
 ;; Simple FPS calculation procedure.
 (defun *calculate-fps*()
   (setq *frame-time-accumulator* (+ *frame-time-accumulator* (get-delta)))
@@ -51,8 +54,13 @@
   (*calculate-fps*))
 
 ;; Game update function.
-(defun game-update())
-  ; (*calculate-delta-time*))
+(defun game-update()
+  (*calculate-delta-time*)
+  (glfw:set-window-title (format false "My Cool Game | FPS: ~a" (get-fps))))
+
+
+
+
 
 ;; This is run every frame of the game.
 (defun game-tick-procedure()
