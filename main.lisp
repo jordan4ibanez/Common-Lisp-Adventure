@@ -15,8 +15,6 @@
                         (load "game-packages/test.lisp")
                         (use-package :test-package))))
 
-;; These should probably be available to the local packages.
-
 
 ;; Pushes a new item to the end of a list.
 (defun push-last(the-item the-listy)
