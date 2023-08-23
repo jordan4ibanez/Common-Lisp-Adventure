@@ -1,7 +1,9 @@
 (defpackage #:window
   (:nicknames :window)
-  (:use :cl))
+  (:use :cl :constants))
 
 (in-package :window)
 
-(export '(test-function))
+; (export '(test-function))
+
+(print constants:true)

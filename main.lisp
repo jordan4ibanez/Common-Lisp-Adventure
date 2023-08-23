@@ -1,26 +1,22 @@
 ;; Auto load all this when compiling.
 (eval-when (:compile-toplevel)
            ;; Load all remote systems/packages before we step into local.
-           (use-package :test-package)
            (ql:quickload :cl-glfw3)
            (use-package :cl-glfw3)
-           (ql:quickload :cl-opengl)
-           (use-package :cl-opengl)
-           (ql:quickload :trivial-main-thread)
-           (use-package :trivial-main-thread)
-           (ql:quickload :local-time)
-           (use-package :local-time)
-           ;; Now step into local packages.
-           (load "game-packages/test.lisp"))
+           (ql:quickload :cl-opengl
+                      (use-package :cl-opengl)
+                      (ql:quickload :trivial-main-thread)
+                      (use-package :trivial-main-thread)
+                      (ql:quickload :local-time)
+                      (use-package :local-time
+                        ;; Now step into local packages.
+                        (load "game-packages/constants.lisp")
+                        (use-package :constants)
+                        (load "game-packages/test.lisp")
+                        (use-package :test-package))))
 
 ;; These should probably be available to the local packages.
-(defconstant false nil)
-(defconstant true t)
 
-(defun yes()
-  true)
-(defun no()
-  false)
 
 ;; Pushes a new item to the end of a list.
 (defun push-last(the-item the-listy)
