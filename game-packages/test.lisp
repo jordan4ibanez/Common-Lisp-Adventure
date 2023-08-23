@@ -12,6 +12,10 @@
 
 (export '(test-function))
 
+(defun test-function()
+  (print "test success"))
+
+
 (defclass entity ()
   ((name
     :initarg :name

@@ -15,7 +15,7 @@
 ;; Auto load all this when compiling.
 (eval-when (:compile-toplevel)
            ;; As you can see, I have given up on QL local files.
-           (load "game-things/test.lisp")
+           (load "game-packages/test.lisp")
            (use-package :test-package)
            (ql:quickload :cl-glfw3)
            (use-package :cl-glfw3)
@@ -54,6 +54,7 @@
 
 (def-window-size-callback update-viewport (window w h)
   (declare (ignore window))
+  (test:test-function)
   (set-viewport w h))
 
 
