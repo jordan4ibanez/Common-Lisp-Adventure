@@ -12,8 +12,8 @@
            (use-package :constants)
            (load "game-packages/delta-time.lisp")
            (use-package :delta-time)
-           (load "game-packages/test.lisp")
-           (use-package :test-package)
+           (load "game-packages/entity.lisp")
+           (use-package :entity)
            (load "game-packages/window.lisp")
            (use-package :window))
 

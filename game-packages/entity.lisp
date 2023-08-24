@@ -4,11 +4,11 @@
 ;; So, namespace test-package I suppose.
 
 
-(defpackage #:test-package
-  (:nicknames :test)
-  (:use :cl))
+(defpackage #:entity
+  (:nicknames :ent)
+  (:use :cl :constants :delta-time))
 
-(in-package #:test)
+(in-package :entity)
 
 (export '(test-function))
 
