@@ -53,9 +53,21 @@
     (setq *old-time* current-time))
   (*calculate-fps*))
 
+;; This is a test in place method for utilizing built in functionality
+(defvar dry-run-old 0.0)
+(defun dry-run-delta()
+  (let ((current-time (float (get-internal-real-time))))
+       (print (/ (- current-time dry-run-old) (float internal-time-units-per-second)))
+       (print "hi")))
+
+(print (float (get-internal-real-time)))
+
+
+
 ;; Game update function.
 (defun game-update()
   (*calculate-delta-time*)
+  (dry-run-delta)
   (glfw:set-window-title (format false "My Cool Game | FPS: ~a" (get-fps))))
 
 
