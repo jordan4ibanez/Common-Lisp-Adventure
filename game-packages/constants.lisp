@@ -1,5 +1,5 @@
 (defpackage #:constants
-  (:nicknames :constants)
+  (:nicknames :constant)
   (:use :cl))
 
 (in-package :constants)
