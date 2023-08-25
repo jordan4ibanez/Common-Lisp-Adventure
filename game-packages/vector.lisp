@@ -101,23 +101,26 @@
 (defmethod get-w((vec vec4))
   (vec4-w vec))
 
+;; Note: This has been reduces to simplified types because this file might
+;; end up a few ten thousand lines long if I don't hold back.
+
 ;; Add.
-(defgeneric add(vector1 vector2))
+(defgeneric add(vector1 addend))
 
-(defmethod add((vector1 vec2) (vector2 vec2))
+(defmethod add((vector1 vec2) (addend vec2))
   (new-vec
-   (+ (get-x vector1) (get-x vector2))
-   (+ (get-y vector1) (get-y vector2))))
+   (+ (get-x vector1) (get-x addend))
+   (+ (get-y vector1) (get-y addend))))
 
-(defmethod add((vector1 vec3) (vector2 vec3))
+(defmethod add((vector1 vec3) (addend vec3))
  (new-vec
-  (+ (get-x vector1) (get-x vector2))
-  (+ (get-y vector1) (get-y vector2))
-  (+ (get-z vector1) (get-z vector2))))
+  (+ (get-x vector1) (get-x addend))
+  (+ (get-y vector1) (get-y addend))
+  (+ (get-z vector1) (get-z addend))))
 
-(defmethod add((vector1 vec4) (vector2 vec4))
+(defmethod add((vector1 vec4) (addend vec4))
  (new-vec
-  (+ (get-x vector1) (get-x vector2))
-  (+ (get-y vector1) (get-y vector2))
-  (+ (get-z vector1) (get-z vector2))
-  (+ (get-z vector1) (get-z vector2))))
+  (+ (get-x vector1) (get-x addend))
+  (+ (get-y vector1) (get-y addend))
+  (+ (get-z vector1) (get-z addend))
+  (+ (get-z vector1) (get-z addend))))
