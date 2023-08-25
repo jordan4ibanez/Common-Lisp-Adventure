@@ -103,7 +103,15 @@
 (defmethod get-w((vec vec4))
   (vec4-w vec))
 
+;; MACROS ARE AMAZING AHHHHHHHHHHHHHHHHHHH
+;; Thanks icantthinkofagoodname on discord!!!
+(defmacro boilerplate (fun-name operation)
+ `(defun ,fun-name()
+   (print (,operation 2.0 2.0))))
 
+(boilerplate testing *)
+
+(testing))
 
 ;; Note: This has been reduces to simplified types because this file might
 ;; end up a few ten thousand lines long if I don't hold back.

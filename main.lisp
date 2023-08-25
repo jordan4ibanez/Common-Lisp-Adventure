@@ -24,6 +24,7 @@
   (push the-item (cdr (last the-listy))))
 
 
+
 ;; Game update function.
 (defun game-update()
   (delta:calculate-delta-time)
