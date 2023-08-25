@@ -103,16 +103,17 @@
 (defmethod get-w((vec vec4))
   (vec4-w vec))
 
-;; MACROS ARE AMAZING AHHHHHHHHHHHHHHHHHHH
-;; Thanks icantthinkofagoodname on discord!!!
-(defmacro boilerplate (fun-name operation)
- `(defun ,fun-name()
-   (print (,operation 2.0 2.0))))
+;; To list.
+(defgeneric to-list(vec))
 
-(boilerplate testing *)
+(defmethod to-list((vec vec2))
+  (list (get-x vec) (get-y vec)))
 
-(testing))
+(defmethod to-list((vec vec3))
+  (list (get-x vec) (get-y vec) (get-z vec)))
 
+(defmethod to-list((vec vec4))
+  (list (get-x vec) (get-y vec) (get-z vec) (get-w vec)))
 ;; Note: This has been reduces to simplified types because this file might
 ;; end up a few ten thousand lines long if I don't hold back.
 
@@ -394,3 +395,17 @@
 
 (defmethod invert((vector1 vec4))
  (mul vector1 -1))
+
+
+ ;; MACROS ARE AMAZING AHHHHHHHHHHHHHHHHHHH
+ ;; Thanks icantthinkofagoodname on discord!!!
+; (defmacro boilerplate (fun-name operation)
+;   `(defgeneric ,fun-name(vec))
+;   `(defmethod ,fun-name((vec vec2)))
+;
+;   `(defmethod ,fun-name((vec vec3))
+;      ()))
+
+; (boilerplate testing *)
+;
+; (testing (new-vec 2 4))
