@@ -56,28 +56,38 @@
 (defmethod print-vec((vec vec4))
   (format true "vec4(~a, ~a, ~a, ~a)" (vec4-x vec) (vec4-y vec) (vec4-z vec) (vec4-w vec)))
 
-;; Get X
-(defgeneric vec-x(vec)
+;; Get X.
+(defgeneric vec-get-x(vec)
   (:documentation "Get the X component of a vector-2,3,4."))
 
-(defmethod vec-x((vec vec2))
+(defmethod vec-get-x((vec vec2))
   (vec2-x vec))
 
-(defmethod vec-x((vec vec3))
+(defmethod vec-get-x((vec vec3))
   (vec3-x vec))
 
-(defmethod vec-x((vec vec4))
+(defmethod vec-get-x((vec vec4))
   (vec4-x vec))
 
-;; Get Y
-(defgeneric (vec)
+;; Get Y.
+(defgeneric vec-get-y(vec)
   (:documentation "Get the Y component of a vector-2,3,4."))
 
-(defmethod vec-x((vec vec2))
-  (vec2-x vec))
+(defmethod vec-get-y((vec vec2))
+  (vec2-y vec))
 
-(defmethod vec-x((vec vec3))
-  (vec3-x vec))
+(defmethod vec-get-y((vec vec3))
+  (vec3-y vec))
 
-(defmethod vec-x((vec vec4))
-  (vec4-x vec))
+(defmethod vec-get-y((vec vec4))
+  (vec4-y vec))
+
+;; Get Z.
+(defgeneric vec-get-z(vec)
+  (:documentation "Get the Y component of a vector-3,4."))
+
+(defmethod vec-get-z((vec vec3))
+  (vec3-z vec))
+
+(defmethod vec-get-z((vec vec4))
+  (vec4-z vec))
