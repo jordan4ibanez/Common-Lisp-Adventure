@@ -13,9 +13,12 @@
           make-vec2
           make-vec3
           make-vec4
-          vec-x
-          vec-y))
+          vec-get-x
+          vec-get-y
+          vec-get-z
+          vec-get-w))
 
+;; Base structures. Data containers, do not need OOP flexibility.
 (defstruct vec2
   (x 0.0 :type float)
   (y 0.0 :type float))
@@ -84,10 +87,17 @@
 
 ;; Get Z.
 (defgeneric vec-get-z(vec)
-  (:documentation "Get the Y component of a vector-3,4."))
+  (:documentation "Get the Z component of a vector-3,4."))
 
 (defmethod vec-get-z((vec vec3))
   (vec3-z vec))
 
 (defmethod vec-get-z((vec vec4))
   (vec4-z vec))
+
+;; Get W.
+(defgeneric vec-get-w(vec)
+  (:documentation "Get the W component of a Vector-4."))
+
+(defmethod vec-get-w((vec vec4))
+  (vec4-w vec))
