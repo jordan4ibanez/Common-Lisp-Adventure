@@ -23,12 +23,16 @@
 (defun push-last(the-item the-listy)
   (push the-item (cdr (last the-listy))))
 
+; (defvar cool-test (new-vec 3 3 3))
 
+; (defvar cccc (new-vec-from-list (loop for x in (to-list cool-test) collect (* x 5.0))))
 
 ;; Game update function.
 (defun game-update()
   (delta:calculate-delta-time)
   (if (delta:fps-update) (glfw:set-window-title (format false "My Cool Game | FPS: ~a" (get-fps)))))
+
+(print (new-vec-from-list (loop for x in (to-list (new-vec 1 2 3)) collect (* x 2))))
 
  ;; This is run every frame of the game.
 (defun game-tick-procedure()

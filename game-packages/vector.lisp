@@ -9,6 +9,8 @@
           vec3
           vec4
           new-vec
+          new-vec-from-list
+          to-list
           print-vec
           get-x
           get-y
@@ -17,6 +19,7 @@
           add
           sub
           div
+          mul
           invert))
 
 ;; Base structures. Data containers, do not need OOP flexibility.
@@ -24,12 +27,12 @@
   (x 0.0 :type float)
   (y 0.0 :type float))
 
-(defstruct vec3
+(defstruct vec3 (vec2)
   (x 0.0 :type float)
   (y 0.0 :type float)
   (z 0.0 :type float))
 
-(defstruct vec4
+(defstruct vec4 (vec3)
   (x 0.0 :type float)
   (y 0.0 :type float)
   (z 0.0 :type float)
@@ -40,6 +43,12 @@
   (cond ((not (null w)) (make-vec4 :x (float x) :y (float y) :z (float z) :w (float w)))
         ((not (null z)) (make-vec3 :x (float x) :y (float y) :z (float z)))
         (true (make-vec2 :x (float x) :y (float y)))))
+
+;; Constructor with auto dispatch for lists. Just dumps integers into floating point.
+(defun new-vec-from-list(input-list)
+ (cond ((= (length input-list) 2) (make-vec2 :x (float (nth 0 input-list)) :y (float (nth 1 input-list))))
+       ((= (length input-list) 3) (make-vec3 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list))))
+       ((= (length input-list) 4) (make-vec4 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list)) :w (float (nth 3 input-list))))))
 
 ;; Functional slot access.
 ; (let ((test-vector (make-vec2 :x 0.0 :y 0.0)))
@@ -103,7 +112,8 @@
 (defmethod get-w((vec vec4))
   (vec4-w vec))
 
-;; To list.
+
+  ;; To list.
 (defgeneric to-list(vec))
 
 (defmethod to-list((vec vec2))
@@ -114,275 +124,32 @@
 
 (defmethod to-list((vec vec4))
   (list (get-x vec) (get-y vec) (get-z vec) (get-w vec)))
+
+;; TODO: IMPLEMENT THIS HOLY MOLY
+; From famicon guy in discord:
+; `(progn
+;    (defmethod ...)
+;    (defmethod …)
+;    (defmethod …))
+
+;; Remove a bunch of boilerplate functions.
+(defmacro boilerplate (fun-name operation)
+  `(progn
+    (defgeneric ,fun-name(vector1 operator))
+    (defmethod ,fun-name((vector1 vec2) (operator vec2))
+      (new-vec-from-list (loop for x in (to-list vector1) for y in (to-list operator) collect (,operation x y))))
+    (defmethod ,fun-name((vector1 vec2) (operator float))
+      (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x operator))))
+    (defmethod ,fun-name((vector1 vec2) (operator integer))
+      (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x (float operator)))))))
+
 ;; Note: This has been reduces to simplified types because this file might
 ;; end up a few ten thousand lines long if I don't hold back.
 
-;; Add.
-(defgeneric add(vector1 addend))
-
-;; Vec2 & Vec2.
-(defmethod add((vector1 vec2) (addend vec2))
-  (new-vec
-   (+ (get-x vector1) (get-x addend))
-   (+ (get-y vector1) (get-y addend))))
-
-;; Vec2 & Floating Scalar.
-(defmethod add((vector1 vec2) (addend float))
-  (new-vec
-   (+ (get-x vector1) addend)
-   (+ (get-y vector1) addend)))
-
-;; Vec2 & Integral Scalar.
-(defmethod add((vector1 vec2) (addend integer))
-  (new-vec
-   (+ (get-x vector1) (float addend))
-   (+ (get-y vector1) (float addend))))
-
-;; Vec3 & Vec3.
-(defmethod add((vector1 vec3) (addend vec3))
- (new-vec
-  (+ (get-x vector1) (get-x addend))
-  (+ (get-y vector1) (get-y addend))
-  (+ (get-z vector1) (get-z addend))))
-
-;; Vec3 & Floating Scalar
-(defmethod add((vector1 vec3) (addend float))
- (new-vec
-  (+ (get-x vector1) addend)
-  (+ (get-y vector1) addend)
-  (+ (get-z vector1) addend)))
-
-;; Vec3 & Integral Scalar.
-(defmethod add((vector1 vec3) (addend integer))
- (new-vec
-  (+ (get-x vector1) (float addend))
-  (+ (get-y vector1) (float addend))
-  (+ (get-z vector1) (float addend))))
-
-;; Vec4 & Vec4.
-(defmethod add((vector1 vec4) (addend vec4))
- (new-vec
-  (+ (get-x vector1) (get-x addend))
-  (+ (get-y vector1) (get-y addend))
-  (+ (get-z vector1) (get-z addend))
-  (+ (get-w vector1) (get-w addend))))
-
-;; Vec4 & Floating Scalar.
-(defmethod add((vector1 vec4) (addend float))
- (new-vec
-  (+ (get-x vector1) addend)
-  (+ (get-y vector1) addend)
-  (+ (get-z vector1) addend)
-  (+ (get-w vector1) addend)))
-
-;; Vec4 & Integral Scalar.
-(defmethod add((vector1 vec4) (addend integer))
- (new-vec
-  (+ (get-x vector1) (float addend))
-  (+ (get-y vector1) (float addend))
-  (+ (get-z vector1) (float addend))
-  (+ (get-w vector1) (float addend))))
-
-
-;; Subtract.
-(defgeneric sub(vector1 subtrahend))
-
-;; Vec2 & Vec2.
-(defmethod sub((vector1 vec2) (subtrahend vec2))
-  (new-vec
-   (- (get-x vector1) (get-x subtrahend))
-   (- (get-y vector1) (get-y subtrahend))))
-
-;; Vec2 & Floating Scalar.
-(defmethod sub((vector1 vec2) (subtrahend float))
-  (new-vec
-   (- (get-x vector1) subtrahend)
-   (- (get-y vector1) subtrahend)))
-
-;; Vec2 & Integral Scalar.
-(defmethod sub((vector1 vec2) (subtrahend integer))
-  (new-vec
-   (- (get-x vector1) (float subtrahend))
-   (- (get-y vector1) (float subtrahend))))
-
-;; Vec3 & Vec3.
-(defmethod sub((vector1 vec3) (subtrahend vec3))
-  (new-vec
-   (- (get-x vector1) (get-x subtrahend))
-   (- (get-y vector1) (get-y subtrahend))
-   (- (get-z vector1) (get-z subtrahend))))
-
-;; Vec3 & Floating Scalar
-(defmethod sub((vector1 vec3) (subtrahend float))
-  (new-vec
-   (- (get-x vector1) subtrahend)
-   (- (get-y vector1) subtrahend)
-   (- (get-z vector1) subtrahend)))
-
-;; Vec3 & Integral Scalar.
-(defmethod sub((vector1 vec3) (subtrahend integer))
-  (new-vec
-   (- (get-x vector1) (float subtrahend))
-   (- (get-y vector1) (float subtrahend))
-   (- (get-z vector1) (float subtrahend))))
-
-;; Vec4 & Vec4.
-(defmethod sub((vector1 vec4) (subtrahend vec4))
-  (new-vec
-   (- (get-x vector1) (get-x subtrahend))
-   (- (get-y vector1) (get-y subtrahend))
-   (- (get-z vector1) (get-z subtrahend))
-   (- (get-w vector1) (get-w subtrahend))))
-
-;; Vec4 & Floating Scalar.
-(defmethod sub((vector1 vec4) (subtrahend float))
-  (new-vec
-   (- (get-x vector1) subtrahend)
-   (- (get-y vector1) subtrahend)
-   (- (get-z vector1) subtrahend)
-   (- (get-w vector1) subtrahend)))
-
-;; Vec4 & Integral Scalar.
-(defmethod sub((vector1 vec4) (subtrahend integer))
-  (new-vec
-   (- (get-x vector1) (float subtrahend))
-   (- (get-y vector1) (float subtrahend))
-   (- (get-z vector1) (float subtrahend))
-   (- (get-w vector1) (float subtrahend))))
-
-
- ;; Divide.
-(defgeneric div(vector1 divisor))
-
- ;; Vec2 & Vec2.
-(defmethod div((vector1 vec2) (divisor vec2))
-  (new-vec
-   (/ (get-x vector1) (get-x divisor))
-   (/ (get-y vector1) (get-y divisor))))
-
- ;; Vec2 & Floating Scalar.
-(defmethod div((vector1 vec2) (divisor float))
-  (new-vec
-   (/ (get-x vector1) divisor)
-   (/ (get-y vector1) divisor)))
-
- ;; Vec2 & Integral Scalar.
-(defmethod div((vector1 vec2) (divisor integer))
-  (new-vec
-   (/ (get-x vector1) (float divisor))
-   (/ (get-y vector1) (float divisor))))
-
- ;; Vec3 & Vec3.
-(defmethod div((vector1 vec3) (divisor vec3))
-  (new-vec
-   (/ (get-x vector1) (get-x divisor))
-   (/ (get-y vector1) (get-y divisor))
-   (/ (get-z vector1) (get-z divisor))))
-
- ;; Vec3 & Floating Scalar
-(defmethod div((vector1 vec3) (divisor float))
-  (new-vec
-   (/ (get-x vector1) divisor)
-   (/ (get-y vector1) divisor)
-   (/ (get-z vector1) divisor)))
-
- ;; Vec3 & Integral Scalar.
-(defmethod div((vector1 vec3) (divisor integer))
-  (new-vec
-   (/ (get-x vector1) (float divisor))
-   (/ (get-y vector1) (float divisor))
-   (/ (get-z vector1) (float divisor))))
-
- ;; Vec4 & Vec4.
-(defmethod div((vector1 vec4) (divisor vec4))
-  (new-vec
-   (/ (get-x vector1) (get-x divisor))
-   (/ (get-y vector1) (get-y divisor))
-   (/ (get-z vector1) (get-z divisor))
-   (/ (get-w vector1) (get-w divisor))))
-
- ;; Vec4 & Floating Scalar.
-(defmethod div((vector1 vec4) (divisor float))
-  (new-vec
-   (/ (get-x vector1) divisor)
-   (/ (get-y vector1) divisor)
-   (/ (get-z vector1) divisor)
-   (/ (get-w vector1) divisor)))
-
- ;; Vec4 & Integral Scalar.
-(defmethod div((vector1 vec4) (divisor integer))
-  (new-vec
-   (/ (get-x vector1) (float divisor))
-   (/ (get-y vector1) (float divisor))
-   (/ (get-z vector1) (float divisor))
-   (/ (get-w vector1) (float divisor))))
-
-
-;; Multiply.
-(defgeneric mul(vector1 multiplier))
-
-;; Vec2 & Vec2.
-(defmethod mul((vector1 vec2) (multiplier vec2))
-  (new-vec
-   (* (get-x vector1) (get-x multiplier))
-   (* (get-y vector1) (get-y multiplier))))
-
-;; Vec2 & Floating Scalar.
-(defmethod mul((vector1 vec2) (multiplier float))
-  (new-vec
-   (* (get-x vector1) multiplier)
-   (* (get-y vector1) multiplier)))
-
-;; Vec2 & Integral Scalar.
-(defmethod mul((vector1 vec2) (multiplier integer))
-  (new-vec
-   (* (get-x vector1) (float multiplier))
-   (* (get-y vector1) (float multiplier))))
-
-;; Vec3 & Vec3.
-(defmethod mul((vector1 vec3) (multiplier vec3))
-  (new-vec
-   (* (get-x vector1) (get-x multiplier))
-   (* (get-y vector1) (get-y multiplier))
-   (* (get-z vector1) (get-z multiplier))))
-
-;; Vec3 & Floating Scalar
-(defmethod mul((vector1 vec3) (multiplier float))
-  (new-vec
-   (* (get-x vector1) multiplier)
-   (* (get-y vector1) multiplier)
-   (* (get-z vector1) multiplier)))
-
-;; Vec3 & Integral Scalar.
-(defmethod mul((vector1 vec3) (multiplier integer))
-  (new-vec
-   (* (get-x vector1) (float multiplier))
-   (* (get-y vector1) (float multiplier))
-   (* (get-z vector1) (float multiplier))))
-
-;; Vec4 & Vec4.
-(defmethod mul((vector1 vec4) (multiplier vec4))
-  (new-vec
-   (* (get-x vector1) (get-x multiplier))
-   (* (get-y vector1) (get-y multiplier))
-   (* (get-z vector1) (get-z multiplier))
-   (* (get-w vector1) (get-w multiplier))))
-
-;; Vec4 & Floating Scalar.
-(defmethod mul((vector1 vec4) (multiplier float))
-  (new-vec
-   (* (get-x vector1) multiplier)
-   (* (get-y vector1) multiplier)
-   (* (get-z vector1) multiplier)
-   (* (get-w vector1) multiplier)))
-
-;; Vec4 & Integral Scalar.
-(defmethod mul((vector1 vec4) (multiplier integer))
-  (new-vec
-   (* (get-x vector1) (float multiplier))
-   (* (get-y vector1) (float multiplier))
-   (* (get-z vector1) (float multiplier))
-   (* (get-w vector1) (float multiplier))))
+(boilerplate add +)
+(boilerplate sub -)
+(boilerplate div /)
+(boilerplate mul *)
 
 ;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
 (defgeneric invert(vector))
@@ -395,17 +162,3 @@
 
 (defmethod invert((vector1 vec4))
  (mul vector1 -1))
-
-
- ;; MACROS ARE AMAZING AHHHHHHHHHHHHHHHHHHH
- ;; Thanks icantthinkofagoodname on discord!!!
-; (defmacro boilerplate (fun-name operation)
-;   `(defgeneric ,fun-name(vec))
-;   `(defmethod ,fun-name((vec vec2)))
-;
-;   `(defmethod ,fun-name((vec vec3))
-;      ()))
-
-; (boilerplate testing *)
-;
-; (testing (new-vec 2 4))
