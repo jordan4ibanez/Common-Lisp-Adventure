@@ -243,70 +243,70 @@
 
 
  ;; Divide.
-(defgeneric div(vector1 addend))
+(defgeneric div(vector1 divisor))
 
  ;; Vec2 & Vec2.
-(defmethod div((vector1 vec2) (addend vec2))
+(defmethod div((vector1 vec2) (divisor vec2))
   (new-vec
-   (/ (get-x vector1) (get-x addend))
-   (/ (get-y vector1) (get-y addend))))
+   (/ (get-x vector1) (get-x divisor))
+   (/ (get-y vector1) (get-y divisor))))
 
  ;; Vec2 & Floating Scalar.
-(defmethod div((vector1 vec2) (addend float))
+(defmethod div((vector1 vec2) (divisor float))
   (new-vec
-   (/ (get-x vector1) addend)
-   (/ (get-y vector1) addend)))
+   (/ (get-x vector1) divisor)
+   (/ (get-y vector1) divisor)))
 
  ;; Vec2 & Integral Scalar.
-(defmethod div((vector1 vec2) (addend integer))
+(defmethod div((vector1 vec2) (divisor integer))
   (new-vec
-   (/ (get-x vector1) (float addend))
-   (/ (get-y vector1) (float addend))))
+   (/ (get-x vector1) (float divisor))
+   (/ (get-y vector1) (float divisor))))
 
  ;; Vec3 & Vec3.
-(defmethod div((vector1 vec3) (addend vec3))
+(defmethod div((vector1 vec3) (divisor vec3))
   (new-vec
-   (/ (get-x vector1) (get-x addend))
-   (/ (get-y vector1) (get-y addend))
-   (/ (get-z vector1) (get-z addend))))
+   (/ (get-x vector1) (get-x divisor))
+   (/ (get-y vector1) (get-y divisor))
+   (/ (get-z vector1) (get-z divisor))))
 
  ;; Vec3 & Floating Scalar
-(defmethod div((vector1 vec3) (addend float))
+(defmethod div((vector1 vec3) (divisor float))
   (new-vec
-   (/ (get-x vector1) addend)
-   (/ (get-y vector1) addend)
-   (/ (get-z vector1) addend)))
+   (/ (get-x vector1) divisor)
+   (/ (get-y vector1) divisor)
+   (/ (get-z vector1) divisor)))
 
  ;; Vec3 & Integral Scalar.
-(defmethod div((vector1 vec3) (addend integer))
+(defmethod div((vector1 vec3) (divisor integer))
   (new-vec
-   (/ (get-x vector1) (float addend))
-   (/ (get-y vector1) (float addend))
-   (/ (get-z vector1) (float addend))))
+   (/ (get-x vector1) (float divisor))
+   (/ (get-y vector1) (float divisor))
+   (/ (get-z vector1) (float divisor))))
 
  ;; Vec4 & Vec4.
-(defmethod div((vector1 vec4) (addend vec4))
+(defmethod div((vector1 vec4) (divisor vec4))
   (new-vec
-   (/ (get-x vector1) (get-x addend))
-   (/ (get-y vector1) (get-y addend))
-   (/ (get-z vector1) (get-z addend))
-   (/ (get-w vector1) (get-w addend))))
+   (/ (get-x vector1) (get-x divisor))
+   (/ (get-y vector1) (get-y divisor))
+   (/ (get-z vector1) (get-z divisor))
+   (/ (get-w vector1) (get-w divisor))))
 
  ;; Vec4 & Floating Scalar.
-(defmethod div((vector1 vec4) (addend float))
+(defmethod div((vector1 vec4) (divisor float))
   (new-vec
-   (/ (get-x vector1) addend)
-   (/ (get-y vector1) addend)
-   (/ (get-z vector1) addend)
-   (/ (get-w vector1) addend)))
+   (/ (get-x vector1) divisor)
+   (/ (get-y vector1) divisor)
+   (/ (get-z vector1) divisor)
+   (/ (get-w vector1) divisor)))
 
  ;; Vec4 & Integral Scalar.
-(defmethod div((vector1 vec4) (addend integer))
+(defmethod div((vector1 vec4) (divisor integer))
   (new-vec
-   (/ (get-x vector1) (float addend))
-   (/ (get-y vector1) (float addend))
-   (/ (get-z vector1) (float addend))
-   (/ (get-w vector1) (float addend))))
+   (/ (get-x vector1) (float divisor))
+   (/ (get-y vector1) (float divisor))
+   (/ (get-z vector1) (float divisor))
+   (/ (get-w vector1) (float divisor))))
 
 
 ;; Multiply.
