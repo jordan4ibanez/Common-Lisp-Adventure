@@ -310,70 +310,70 @@
 
 
 ;; Multiply.
-(defgeneric mul(vector1 addend))
+(defgeneric mul(vector1 multiplier))
 
 ;; Vec2 & Vec2.
-(defmethod mul((vector1 vec2) (addend vec2))
+(defmethod mul((vector1 vec2) (multiplier vec2))
   (new-vec
-   (* (get-x vector1) (get-x addend))
-   (* (get-y vector1) (get-y addend))))
+   (* (get-x vector1) (get-x multiplier))
+   (* (get-y vector1) (get-y multiplier))))
 
 ;; Vec2 & Floating Scalar.
-(defmethod mul((vector1 vec2) (addend float))
+(defmethod mul((vector1 vec2) (multiplier float))
   (new-vec
-   (* (get-x vector1) addend)
-   (* (get-y vector1) addend)))
+   (* (get-x vector1) multiplier)
+   (* (get-y vector1) multiplier)))
 
 ;; Vec2 & Integral Scalar.
-(defmethod mul((vector1 vec2) (addend integer))
+(defmethod mul((vector1 vec2) (multiplier integer))
   (new-vec
-   (* (get-x vector1) (float addend))
-   (* (get-y vector1) (float addend))))
+   (* (get-x vector1) (float multiplier))
+   (* (get-y vector1) (float multiplier))))
 
 ;; Vec3 & Vec3.
-(defmethod mul((vector1 vec3) (addend vec3))
+(defmethod mul((vector1 vec3) (multiplier vec3))
   (new-vec
-   (* (get-x vector1) (get-x addend))
-   (* (get-y vector1) (get-y addend))
-   (* (get-z vector1) (get-z addend))))
+   (* (get-x vector1) (get-x multiplier))
+   (* (get-y vector1) (get-y multiplier))
+   (* (get-z vector1) (get-z multiplier))))
 
 ;; Vec3 & Floating Scalar
-(defmethod mul((vector1 vec3) (addend float))
+(defmethod mul((vector1 vec3) (multiplier float))
   (new-vec
-   (* (get-x vector1) addend)
-   (* (get-y vector1) addend)
-   (* (get-z vector1) addend)))
+   (* (get-x vector1) multiplier)
+   (* (get-y vector1) multiplier)
+   (* (get-z vector1) multiplier)))
 
 ;; Vec3 & Integral Scalar.
-(defmethod mul((vector1 vec3) (addend integer))
+(defmethod mul((vector1 vec3) (multiplier integer))
   (new-vec
-   (* (get-x vector1) (float addend))
-   (* (get-y vector1) (float addend))
-   (* (get-z vector1) (float addend))))
+   (* (get-x vector1) (float multiplier))
+   (* (get-y vector1) (float multiplier))
+   (* (get-z vector1) (float multiplier))))
 
 ;; Vec4 & Vec4.
-(defmethod mul((vector1 vec4) (addend vec4))
+(defmethod mul((vector1 vec4) (multiplier vec4))
   (new-vec
-   (* (get-x vector1) (get-x addend))
-   (* (get-y vector1) (get-y addend))
-   (* (get-z vector1) (get-z addend))
-   (* (get-w vector1) (get-w addend))))
+   (* (get-x vector1) (get-x multiplier))
+   (* (get-y vector1) (get-y multiplier))
+   (* (get-z vector1) (get-z multiplier))
+   (* (get-w vector1) (get-w multiplier))))
 
 ;; Vec4 & Floating Scalar.
-(defmethod mul((vector1 vec4) (addend float))
+(defmethod mul((vector1 vec4) (multiplier float))
   (new-vec
-   (* (get-x vector1) addend)
-   (* (get-y vector1) addend)
-   (* (get-z vector1) addend)
-   (* (get-w vector1) addend)))
+   (* (get-x vector1) multiplier)
+   (* (get-y vector1) multiplier)
+   (* (get-z vector1) multiplier)
+   (* (get-w vector1) multiplier)))
 
 ;; Vec4 & Integral Scalar.
-(defmethod mul((vector1 vec4) (addend integer))
+(defmethod mul((vector1 vec4) (multiplier integer))
   (new-vec
-   (* (get-x vector1) (float addend))
-   (* (get-y vector1) (float addend))
-   (* (get-z vector1) (float addend))
-   (* (get-w vector1) (float addend))))
+   (* (get-x vector1) (float multiplier))
+   (* (get-y vector1) (float multiplier))
+   (* (get-z vector1) (float multiplier))
+   (* (get-w vector1) (float multiplier))))
 
 ;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
 (defgeneric invert(vector))
