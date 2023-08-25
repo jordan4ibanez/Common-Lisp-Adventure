@@ -16,7 +16,9 @@
           get-w
           add
           sub
-          div))
+          div
+          invert))
+
 
 
 ;; Base structures. Data containers, do not need OOP flexibility.
@@ -372,3 +374,15 @@
    (* (get-y vector1) (float addend))
    (* (get-z vector1) (float addend))
    (* (get-w vector1) (float addend))))
+
+;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
+(defgeneric invert(vector))
+
+(defmethod invert((vector1 vec2))
+ (mul vector1 -1))
+
+(defmethod invert((vector1 vec3))
+ (mul vector1 -1))
+
+(defmethod invert((vector1 vec4))
+ (mul vector1 -1))
