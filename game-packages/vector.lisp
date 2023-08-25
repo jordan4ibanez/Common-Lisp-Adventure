@@ -10,13 +10,12 @@
           vec4
           new-vec
           print-vec
-          make-vec2
-          make-vec3
-          make-vec4
-          vec-get-x
-          vec-get-y
-          vec-get-z
-          vec-get-w))
+          get-x
+          get-y
+          get-z
+          get-w
+          add
+          ))
 
 ;; Base structures. Data containers, do not need OOP flexibility.
 (defstruct vec2
@@ -60,44 +59,65 @@
   (format true "vec4(~a, ~a, ~a, ~a)" (vec4-x vec) (vec4-y vec) (vec4-z vec) (vec4-w vec)))
 
 ;; Get X.
-(defgeneric vec-get-x(vec)
+(defgeneric get-x(vec)
   (:documentation "Get the X component of a vector-2,3,4."))
 
-(defmethod vec-get-x((vec vec2))
+(defmethod get-x((vec vec2))
   (vec2-x vec))
 
-(defmethod vec-get-x((vec vec3))
+(defmethod get-x((vec vec3))
   (vec3-x vec))
 
-(defmethod vec-get-x((vec vec4))
+(defmethod get-x((vec vec4))
   (vec4-x vec))
 
 ;; Get Y.
-(defgeneric vec-get-y(vec)
+(defgeneric get-y(vec)
   (:documentation "Get the Y component of a vector-2,3,4."))
 
-(defmethod vec-get-y((vec vec2))
+(defmethod get-y((vec vec2))
   (vec2-y vec))
 
-(defmethod vec-get-y((vec vec3))
+(defmethod get-y((vec vec3))
   (vec3-y vec))
 
-(defmethod vec-get-y((vec vec4))
+(defmethod get-y((vec vec4))
   (vec4-y vec))
 
 ;; Get Z.
-(defgeneric vec-get-z(vec)
+(defgeneric get-z(vec)
   (:documentation "Get the Z component of a vector-3,4."))
 
-(defmethod vec-get-z((vec vec3))
+(defmethod get-z((vec vec3))
   (vec3-z vec))
 
-(defmethod vec-get-z((vec vec4))
+(defmethod get-z((vec vec4))
   (vec4-z vec))
 
 ;; Get W.
-(defgeneric vec-get-w(vec)
+(defgeneric get-w(vec)
   (:documentation "Get the W component of a Vector-4."))
 
-(defmethod vec-get-w((vec vec4))
+(defmethod get-w((vec vec4))
   (vec4-w vec))
+
+;; Add.
+(defgeneric add(vector1 vector2))
+
+(defmethod add((vector1 vec2) (vector2 vec2))
+  (new-vec
+   (+ (get-x vector1) (get-x vector2))
+   (+ (get-y vector1) (get-y vector2))))
+
+(defmethod add((vector1 vec3) (vector2 vec3))
+ (new-vec
+  (+ (get-x vector1) (get-x vector2))
+  (+ (get-y vector1) (get-y vector2))
+  (+ (get-z vector1) (get-z vector2))))
+
+(defmethod add((vector1 vec4) (vector2 vec4))
+ (new-vec
+  (+ (get-x vector1) (get-x vector2))
+  (+ (get-y vector1) (get-y vector2))
+  (+ (get-z vector1) (get-z vector2))
+  (+ (get-z vector1) (get-z vector2))))
