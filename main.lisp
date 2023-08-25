@@ -17,10 +17,7 @@
   (load "game-packages/entity.lisp")
   (use-package :entity)
   (load "game-packages/window.lisp")
-  (use-package :window)
-  (format true "Remember to change parinfer to \"Paren\" mode!"))
-
-
+  (use-package :window))
 
 ;; Pushes a new item to the end of a list.
 (defun push-last(the-item the-listy)
@@ -50,7 +47,6 @@
       (set-viewport 600 400)
       (loop until (window-should-close-p)
         do (game-tick-procedure)))))
-
 
 (defun run()
   (sb-int:with-float-traps-masked (:invalid)

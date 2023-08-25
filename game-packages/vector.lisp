@@ -19,8 +19,6 @@
           div
           invert))
 
-
-
 ;; Base structures. Data containers, do not need OOP flexibility.
 (defstruct vec2
   (x 0.0 :type float)
@@ -104,6 +102,8 @@
 
 (defmethod get-w((vec vec4))
   (vec4-w vec))
+
+
 
 ;; Note: This has been reduces to simplified types because this file might
 ;; end up a few ten thousand lines long if I don't hold back.
