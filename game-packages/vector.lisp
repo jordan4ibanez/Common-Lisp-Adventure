@@ -176,70 +176,70 @@
 
 
 ;; Subtract.
-(defgeneric sub(vector1 addend))
+(defgeneric sub(vector1 subtrahend))
 
 ;; Vec2 & Vec2.
-(defmethod sub((vector1 vec2) (addend vec2))
+(defmethod sub((vector1 vec2) (subtrahend vec2))
   (new-vec
-   (- (get-x vector1) (get-x addend))
-   (- (get-y vector1) (get-y addend))))
+   (- (get-x vector1) (get-x subtrahend))
+   (- (get-y vector1) (get-y subtrahend))))
 
 ;; Vec2 & Floating Scalar.
-(defmethod sub((vector1 vec2) (addend float))
+(defmethod sub((vector1 vec2) (subtrahend float))
   (new-vec
-   (- (get-x vector1) addend)
-   (- (get-y vector1) addend)))
+   (- (get-x vector1) subtrahend)
+   (- (get-y vector1) subtrahend)))
 
 ;; Vec2 & Integral Scalar.
-(defmethod sub((vector1 vec2) (addend integer))
+(defmethod sub((vector1 vec2) (subtrahend integer))
   (new-vec
-   (- (get-x vector1) (float addend))
-   (- (get-y vector1) (float addend))))
+   (- (get-x vector1) (float subtrahend))
+   (- (get-y vector1) (float subtrahend))))
 
 ;; Vec3 & Vec3.
-(defmethod sub((vector1 vec3) (addend vec3))
+(defmethod sub((vector1 vec3) (subtrahend vec3))
   (new-vec
-   (- (get-x vector1) (get-x addend))
-   (- (get-y vector1) (get-y addend))
-   (- (get-z vector1) (get-z addend))))
+   (- (get-x vector1) (get-x subtrahend))
+   (- (get-y vector1) (get-y subtrahend))
+   (- (get-z vector1) (get-z subtrahend))))
 
 ;; Vec3 & Floating Scalar
-(defmethod sub((vector1 vec3) (addend float))
+(defmethod sub((vector1 vec3) (subtrahend float))
   (new-vec
-   (- (get-x vector1) addend)
-   (- (get-y vector1) addend)
-   (- (get-z vector1) addend)))
+   (- (get-x vector1) subtrahend)
+   (- (get-y vector1) subtrahend)
+   (- (get-z vector1) subtrahend)))
 
 ;; Vec3 & Integral Scalar.
-(defmethod sub((vector1 vec3) (addend integer))
+(defmethod sub((vector1 vec3) (subtrahend integer))
   (new-vec
-   (- (get-x vector1) (float addend))
-   (- (get-y vector1) (float addend))
-   (- (get-z vector1) (float addend))))
+   (- (get-x vector1) (float subtrahend))
+   (- (get-y vector1) (float subtrahend))
+   (- (get-z vector1) (float subtrahend))))
 
 ;; Vec4 & Vec4.
-(defmethod sub((vector1 vec4) (addend vec4))
+(defmethod sub((vector1 vec4) (subtrahend vec4))
   (new-vec
-   (- (get-x vector1) (get-x addend))
-   (- (get-y vector1) (get-y addend))
-   (- (get-z vector1) (get-z addend))
-   (- (get-w vector1) (get-w addend))))
+   (- (get-x vector1) (get-x subtrahend))
+   (- (get-y vector1) (get-y subtrahend))
+   (- (get-z vector1) (get-z subtrahend))
+   (- (get-w vector1) (get-w subtrahend))))
 
 ;; Vec4 & Floating Scalar.
-(defmethod sub((vector1 vec4) (addend float))
+(defmethod sub((vector1 vec4) (subtrahend float))
   (new-vec
-   (- (get-x vector1) addend)
-   (- (get-y vector1) addend)
-   (- (get-z vector1) addend)
-   (- (get-w vector1) addend)))
+   (- (get-x vector1) subtrahend)
+   (- (get-y vector1) subtrahend)
+   (- (get-z vector1) subtrahend)
+   (- (get-w vector1) subtrahend)))
 
 ;; Vec4 & Integral Scalar.
-(defmethod sub((vector1 vec4) (addend integer))
+(defmethod sub((vector1 vec4) (subtrahend integer))
   (new-vec
-   (- (get-x vector1) (float addend))
-   (- (get-y vector1) (float addend))
-   (- (get-z vector1) (float addend))
-   (- (get-w vector1) (float addend))))
+   (- (get-x vector1) (float subtrahend))
+   (- (get-y vector1) (float subtrahend))
+   (- (get-z vector1) (float subtrahend))
+   (- (get-w vector1) (float subtrahend))))
 
 
  ;; Divide.
