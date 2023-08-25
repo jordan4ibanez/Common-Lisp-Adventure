@@ -19,7 +19,6 @@
            (load "game-packages/window.lisp")
            (use-package :window))
 
-
 ;; Pushes a new item to the end of a list.
 (defun push-last(the-item the-listy)
   (push the-item (cdr (last the-listy))))
@@ -28,7 +27,7 @@
 ;; Game update function.
 (defun game-update()
   (delta:calculate-delta-time)
-  (glfw:set-window-title (format false "My Cool Game | FPS: ~a" (get-fps))))
+  (if (delta:fps-update) (glfw:set-window-title (format false "My Cool Game | FPS: ~a" (get-fps)))))
 
  ;; This is run every frame of the game.
 (defun game-tick-procedure()

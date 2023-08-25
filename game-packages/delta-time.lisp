@@ -1,12 +1,13 @@
 (defpackage #:delta-time
   (:nicknames :delta)
-  (:use :cl :cl-glfw3))
+  (:use :cl :cl-glfw3 :constants))
 
 (in-package :delta-time)
 
 (export '(
           get-delta
           get-fps
+          fps-update
           calculate-delta-time))
 
 
@@ -26,6 +27,7 @@
 (defvar frame-time-accumulator 0.0)
 (defvar fps-accumulator 0)
 (defvar fps 0)
+(defvar fps-updated false)
 
 ;; Wrapper function because mutability of delta-time is probably extremely bad.
 (defun get-delta()
@@ -33,15 +35,24 @@
 
 (defun get-fps()
   fps)
+(defun fps-update()
+  fps-updated)
 
 ;; Simple FPS calculation procedure.
 (defun calculate-fps()
   (setq frame-time-accumulator (+ frame-time-accumulator (get-delta)))
   (setq fps-accumulator (+ fps-accumulator 1))
+  ;; Do a fps & fps update. Update flag for frame.
   (cond ((>= frame-time-accumulator 1.0)
-         (setq fps fps-accumulator)
-         (setq fps-accumulator 0)
-         (setq frame-time-accumulator (- frame-time-accumulator 1.0)))))
+         (progn
+           (setq fps fps-accumulator)
+           (setq fps-accumulator 0)
+           (setq frame-time-accumulator (- frame-time-accumulator 1.0))
+           (setq fps-updated true)))
+        ;; Else there's no update, reset flag.
+        (true (progn)
+              (setq fps-updated false))))
+
 
 ;; Deprecated delta time calculation. Calculates to seconds.
 ;; DO NOT USE THIS, IT'S NOT CROSS PLATFORM!
