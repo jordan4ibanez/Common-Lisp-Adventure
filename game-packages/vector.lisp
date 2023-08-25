@@ -240,7 +240,7 @@
    (- (get-w vector1) (float addend))))
 
 
- ;; Multiply.
+ ;; Divide.
  (defgeneric div(vector1 addend))
 
  ;; Vec2 & Vec2.
@@ -305,3 +305,70 @@
     (/ (get-y vector1) (float addend))
     (/ (get-z vector1) (float addend))
     (/ (get-w vector1) (float addend))))
+
+
+;; Multiply.
+(defgeneric mul(vector1 addend))
+
+;; Vec2 & Vec2.
+(defmethod mul((vector1 vec2) (addend vec2))
+  (new-vec
+   (* (get-x vector1) (get-x addend))
+   (* (get-y vector1) (get-y addend))))
+
+;; Vec2 & Floating Scalar.
+(defmethod mul((vector1 vec2) (addend float))
+  (new-vec
+   (* (get-x vector1) addend)
+   (* (get-y vector1) addend)))
+
+;; Vec2 & Integral Scalar.
+(defmethod mul((vector1 vec2) (addend integer))
+  (new-vec
+   (* (get-x vector1) (float addend))
+   (* (get-y vector1) (float addend))))
+
+;; Vec3 & Vec3.
+(defmethod mul((vector1 vec3) (addend vec3))
+  (new-vec
+   (* (get-x vector1) (get-x addend))
+   (* (get-y vector1) (get-y addend))
+   (* (get-z vector1) (get-z addend))))
+
+;; Vec3 & Floating Scalar
+(defmethod mul((vector1 vec3) (addend float))
+  (new-vec
+   (* (get-x vector1) addend)
+   (* (get-y vector1) addend)
+   (* (get-z vector1) addend)))
+
+;; Vec3 & Integral Scalar.
+(defmethod mul((vector1 vec3) (addend integer))
+  (new-vec
+   (* (get-x vector1) (float addend))
+   (* (get-y vector1) (float addend))
+   (* (get-z vector1) (float addend))))
+
+;; Vec4 & Vec4.
+(defmethod mul((vector1 vec4) (addend vec4))
+  (new-vec
+   (* (get-x vector1) (get-x addend))
+   (* (get-y vector1) (get-y addend))
+   (* (get-z vector1) (get-z addend))
+   (* (get-w vector1) (get-w addend))))
+
+;; Vec4 & Floating Scalar.
+(defmethod mul((vector1 vec4) (addend float))
+  (new-vec
+   (* (get-x vector1) addend)
+   (* (get-y vector1) addend)
+   (* (get-z vector1) addend)
+   (* (get-w vector1) addend)))
+
+;; Vec4 & Integral Scalar.
+(defmethod mul((vector1 vec4) (addend integer))
+  (new-vec
+   (* (get-x vector1) (float addend))
+   (* (get-y vector1) (float addend))
+   (* (get-z vector1) (float addend))
+   (* (get-w vector1) (float addend))))
