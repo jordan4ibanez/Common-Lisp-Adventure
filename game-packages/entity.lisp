@@ -10,10 +10,8 @@
 
 (in-package :entity)
 
-(export '(test-function))
-
-(defun test-function()
-  (print "test success"))
+(export '(
+          test-function))
 
 
 (defclass entity ()
