@@ -395,3 +395,17 @@
 
 (defmethod invert((vector1 vec4))
  (mul vector1 -1))
+
+
+ ;; MACROS ARE AMAZING AHHHHHHHHHHHHHHHHHHH
+ ;; Thanks icantthinkofagoodname on discord!!!
+; (defmacro boilerplate (fun-name operation)
+;   `(defgeneric ,fun-name(vec))
+;   `(defmethod ,fun-name((vec vec2)))
+;
+;   `(defmethod ,fun-name((vec vec3))
+;      ()))
+
+; (boilerplate testing *)
+;
+; (testing (new-vec 2 4))
