@@ -27,12 +27,12 @@
   (x 0.0 :type float)
   (y 0.0 :type float))
 
-(defstruct vec3 (vec2)
+(defstruct vec3
   (x 0.0 :type float)
   (y 0.0 :type float)
   (z 0.0 :type float))
 
-(defstruct vec4 (vec3)
+(defstruct vec4
   (x 0.0 :type float)
   (y 0.0 :type float)
   (z 0.0 :type float)
@@ -133,32 +133,49 @@
 ;    (defmethod …))
 
 ;; Remove a bunch of boilerplate functions.
-(defmacro boilerplate (fun-name operation vector-type)
+(defmacro init-generic (fun-name)
   `(progn
-    (defgeneric ,fun-name(vector1 operator))
-    (defmethod ,fun-name((vector1 ,vector-type) (operator ,vector-type))
-      (new-vec-from-list (loop for x in (to-list vector1) for y in (to-list operator) collect (,operation x y))))
-    (defmethod ,fun-name((vector1 ,vector-type) (operator float))
-      (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x operator))))
-    (defmethod ,fun-name((vector1 ,vector-type) (operator integer))
-      (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x (float operator)))))))
+    (defgeneric ,fun-name(vector1 operator))))
+
+(defmacro boilerplate (fun-name operation vector-type)
+    `(progn
+        (defmethod ,fun-name((vector1 integer) (operator integer)) (print "hi"))
+        (defmethod ,fun-name((vector1 ,vector-type) (operator ,vector-type))
+          (new-vec-from-list (loop for x in (to-list vector1) for y in (to-list operator) collect (,operation x y))))
+        (defmethod ,fun-name((vector1 ,vector-type) (operator float))
+          (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x operator))))
+        (defmethod ,fun-name((vector1 ,vector-type) (operator integer))
+          (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x (float operator)))))))
 
 ;; Note: This has been reduces to simplified types because this file might
 ;; end up a few ten thousand lines long if I don't hold back.
 
-(boilerplate add + vec2)
-(boilerplate sub - vec2)
-(boilerplate div / vec2)
-(boilerplate mul * vec2)
+;; TODO: get this to work
+;; ;'vec3 'vec4))); (operation-list (list '* '+ '- '/)))
+; (eval-when (:compile-toplevel :load-toplevel :execute)
+; (eval-when (:compile-toplevel :load-toplevel :execute)
+; (loop for thing in (list 'vec3) do
+;                 (eval (macroexpand`(boilerplate add + ,thing))))
+
+;; This is an unholy function
+(loop for x in '(1 2 3) do
+        (format t "~%---------~%")
+        (loop for y in '(4 5 6) do
+                (format t "(~a,~a)" x y)))
+
+(loop for fun-name in '(mul add div sub) for operation in '(* + / -) do
+        (eval (macroexpand `(init-generic ,fun-name)))
+        (loop for vec-type in '(vec2 vec3 vec4) do
+             (eval (macroexpand `(boilerplate ,fun-name ,operation ,vec-type)))))
 
 ;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
-(defgeneric invert(vector))
+; (defgeneric invert(vector))
 
-(defmethod invert((vector1 vec2))
- (mul vector1 -1))
+; (defmethod invert((vector1 vec2))
+;  (mul vector1 -1))
 
-(defmethod invert((vector1 vec3))
- (mul vector1 -1))
+; (defmethod invert((vector1 vec3))
+;  (mul vector1 -1))
 
-(defmethod invert((vector1 vec4))
- (mul vector1 -1))
+; (defmethod invert((vector1 vec4))
+;  (mul vector1 -1))
