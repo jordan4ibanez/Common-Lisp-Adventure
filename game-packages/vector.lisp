@@ -133,23 +133,23 @@
 ;    (defmethod …))
 
 ;; Remove a bunch of boilerplate functions.
-(defmacro boilerplate (fun-name operation)
+(defmacro boilerplate (fun-name operation vector-type)
   `(progn
     (defgeneric ,fun-name(vector1 operator))
-    (defmethod ,fun-name((vector1 vec2) (operator vec2))
+    (defmethod ,fun-name((vector1 ,vector-type) (operator ,vector-type))
       (new-vec-from-list (loop for x in (to-list vector1) for y in (to-list operator) collect (,operation x y))))
-    (defmethod ,fun-name((vector1 vec2) (operator float))
+    (defmethod ,fun-name((vector1 ,vector-type) (operator float))
       (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x operator))))
-    (defmethod ,fun-name((vector1 vec2) (operator integer))
+    (defmethod ,fun-name((vector1 ,vector-type) (operator integer))
       (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x (float operator)))))))
 
 ;; Note: This has been reduces to simplified types because this file might
 ;; end up a few ten thousand lines long if I don't hold back.
 
-(boilerplate add +)
-(boilerplate sub -)
-(boilerplate div /)
-(boilerplate mul *)
+(boilerplate add + vec2)
+(boilerplate sub - vec2)
+(boilerplate div / vec2)
+(boilerplate mul * vec2)
 
 ;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
 (defgeneric invert(vector))
