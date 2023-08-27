@@ -1,10 +1,3 @@
-(defconstant false nil)
-(defconstant true t)
-
-(defun yes()
-  true)
-(defun no()
-  false)
 
 ;;hmmm very interesting, we can also just do work on things in global state like C.
 ;; REPL really doesn't like resetting the vars lmao. 
