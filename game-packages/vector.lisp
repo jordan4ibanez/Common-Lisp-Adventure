@@ -57,14 +57,20 @@
           ((= (length input-list) 3) (make-vec3 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list))))
           ((= (length input-list) 4) (make-vec4 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list)) :w (float (nth 3 input-list))))))
   
+  ;; Creates a list from a vector.
   (defun new-list-from-vec(vec)
     (cond ((eql (type-of vec) 'vec2) (list (get-x vec) (get-y vec)))
           ((eql (type-of vec) 'vec3) (list (get-x vec) (get-y vec) (get-z vec)))
-          ((eql (type-of vec) 'vec4) (list (get-x vec) (get-y vec) (get-z vec) (get-w vec))))))
+          ((eql (type-of vec) 'vec4) (list (get-x vec) (get-y vec) (get-z vec) (get-w vec)))))
+  
+  ;; A very specific function to help with macros. Maybe?
+  ;; Pass it 'vec2 'vec3 or 'vec4 and you get 2 3 or 4
+  (defun vec-type-component-amount(vec-type)
+    (cond ((eql vec-type 'vec2) 2)
+          ((eql vec-type 'vec3) 3)
+          ((eql vec-type 'vec4) 4)
+          (t 0))))
 
-;; Functional slot access.
-; (let ((test-vector (make-vec2 :x 0.0 :y 0.0)))
-;   (print (format nil "vec2(~a,~a)" (vec2-x test-vector) (vec2-y test-vector))))
 
 ;; OOP slot access methods.
 
@@ -91,16 +97,7 @@
        `(defmethod get-components((vec ,vec-type)) ,return-val))))
       ;  `(init-get-components ,vec-type ,return-val)))
 (vector-sizes)
-
-;; A very specific function to help with macros. Maybe?
-;; Pass it 'vec2 'vec3 or 'vec4 and you get 2 3 or 4
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defun vec-type-component-amount(vec-type)
-    (cond ((eql vec-type 'vec2) 2)
-          ((eql vec-type 'vec3) 3)
-          ((eql vec-type 'vec4) 4)
-          (t 0))))
-
+  
 ;; Now this is just absurd.
 ;; Combo runner for setters & getters, automatically inferred based on vector width.
 (defmacro getters-and-setters()
