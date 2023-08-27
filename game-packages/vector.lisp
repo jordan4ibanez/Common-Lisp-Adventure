@@ -1,6 +1,6 @@
 (defpackage #:vector
   (:nicknames :vec)
-  (:use :cl :constants))
+  (:use :cl))
 
 (in-package :vector)
 
@@ -48,7 +48,7 @@
 (defun new-vec(x y &optional z w)
   (cond ((not (null w)) (make-vec4 :x (float x) :y (float y) :z (float z) :w (float w)))
         ((not (null z)) (make-vec3 :x (float x) :y (float y) :z (float z)))
-        (true (make-vec2 :x (float x) :y (float y)))))
+        (t (make-vec2 :x (float x) :y (float y)))))
 
 ;; Constructor with auto dispatch for lists. Just dumps integers into floating point.
 (defun new-vec-from-list(input-list)
@@ -58,7 +58,7 @@
 
 ;; Functional slot access.
 ; (let ((test-vector (make-vec2 :x 0.0 :y 0.0)))
-;   (print (format false "vec2(~a,~a)" (vec2-x test-vector) (vec2-y test-vector))))
+;   (print (format nil "vec2(~a,~a)" (vec2-x test-vector) (vec2-y test-vector))))
 
 ;; OOP slot access methods.
 
@@ -67,13 +67,13 @@
   (:documentation "Prints out a vector."))
 
 (defmethod print-vec((vec vec2))
-  (format true "vec2(~a, ~a)" (vec2-x vec) (vec2-y vec)))
+  (format t "vec2(~a, ~a)" (vec2-x vec) (vec2-y vec)))
 
 (defmethod print-vec((vec vec3))
-  (format true "vec3(~a, ~a, ~a)" (vec3-x vec) (vec3-y vec) (vec3-z vec)))
+  (format t "vec3(~a, ~a, ~a)" (vec3-x vec) (vec3-y vec) (vec3-z vec)))
 
 (defmethod print-vec((vec vec4))
-  (format true "vec4(~a, ~a, ~a, ~a)" (vec4-x vec) (vec4-y vec) (vec4-z vec) (vec4-w vec)))
+  (format t "vec4(~a, ~a, ~a, ~a)" (vec4-x vec) (vec4-y vec) (vec4-z vec) (vec4-w vec)))
 
 ;; Allows initializing raw generics from code.
 (defmacro init-generic (fun-name) `(progn (defgeneric ,fun-name(vec operator))))
@@ -95,8 +95,8 @@
 ;; Combo runner for setters & getters, automatically inferred.
 (loop for axis in '(x y z w) for count in '(1 2 3 4) collect
         ; (format t "~a~%" fun-name)g
-        (let ((fun-name-get (read-from-string (format false "get-~a" axis)))
-              (fun-name-set (read-from-string (format false "set-~a" axis))))
+        (let ((fun-name-get (read-from-string (format nil "get-~a" axis)))
+              (fun-name-set (read-from-string (format nil "set-~a" axis))))
           ;; Set generics.
           (eval `(defgeneric ,fun-name-get(vec)))
           (eval `(defgeneric ,fun-name-set(vec new-value)))
