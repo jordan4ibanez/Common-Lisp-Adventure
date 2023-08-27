@@ -70,11 +70,14 @@
 (defmethod print-vec((vec vec4))
   (format true "vec4(~a, ~a, ~a, ~a)" (vec4-x vec) (vec4-y vec) (vec4-z vec) (vec4-w vec)))
 
+;; Allows initializing raw generics from code.
+(defmacro init-generic (fun-name) `(progn (defgeneric ,fun-name(vec operator))))
+
 ;; Get number of components in the vector.
+(defmacro init-get-components(vec-type return-val) `(progn (defmethod get-components((vec ,vec-type)) ,return-val)))
 (defgeneric get-components(vec))
-(defmethod get-components((vec vec2)) 2)
-(defmethod get-components((vec vec3)) 3)
-(defmethod get-components((vec vec4)) 4)
+(loop for vec-type in '(vec2 vec3 vec4) for return-val in '(2 3 4) do (eval `(init-get-components ,vec-type ,return-val)))
+
 
 ;; Get X.
 (defgeneric get-x(vec)
@@ -118,8 +121,8 @@
 
 (defmethod get-w((vec vec4))
   (vec4-w vec))
-(loop for vec-type in '()
-      for vec-call in '(vec) do (print vec-type))
+; (loop for vec-type in '()
+;       for vec-call in '(vec) do (print vec-type))
 
   ;; To list.
 (defgeneric to-list(vec))
@@ -136,10 +139,6 @@
 ;; NOTE: This is where macros begin in this file.
 
 ;; Remove a bunch of boilerplate functions.
-(defmacro init-generic (fun-name)
-  `(progn
-    (defgeneric ,fun-name(vec operator))))
-
 (defmacro boilerplate-vec-operations (fun-name operation vector-type)
     `(progn
         (defmethod ,fun-name((vec integer) (operator integer)) (print "hi"))
