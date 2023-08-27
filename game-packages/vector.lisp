@@ -125,57 +125,43 @@
 (defmethod to-list((vec vec4))
   (list (get-x vec) (get-y vec) (get-z vec) (get-w vec)))
 
-;; TODO: IMPLEMENT THIS HOLY MOLY
-; From famicon guy in discord:
-; `(progn
-;    (defmethod ...)
-;    (defmethod …)
-;    (defmethod …))
+;; NOTE: This is where macros begin in this file.
 
 ;; Remove a bunch of boilerplate functions.
 (defmacro init-generic (fun-name)
   `(progn
-    (defgeneric ,fun-name(vector1 operator))))
+    (defgeneric ,fun-name(vec operator))))
 
-(defmacro boilerplate (fun-name operation vector-type)
+(defmacro boilerplate-vec-operations (fun-name operation vector-type)
     `(progn
-        (defmethod ,fun-name((vector1 integer) (operator integer)) (print "hi"))
-        (defmethod ,fun-name((vector1 ,vector-type) (operator ,vector-type))
-          (new-vec-from-list (loop for x in (to-list vector1) for y in (to-list operator) collect (,operation x y))))
-        (defmethod ,fun-name((vector1 ,vector-type) (operator float))
-          (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x operator))))
-        (defmethod ,fun-name((vector1 ,vector-type) (operator integer))
-          (new-vec-from-list (loop for x in (to-list vector1) collect (,operation x (float operator)))))))
+        (defmethod ,fun-name((vec integer) (operator integer)) (print "hi"))
+        (defmethod ,fun-name((vec ,vector-type) (operator ,vector-type))
+          (new-vec-from-list (loop for x in (to-list vec) for y in (to-list operator) collect (,operation x y))))
+        (defmethod ,fun-name((vec ,vector-type) (operator float))
+          (new-vec-from-list (loop for x in (to-list vec) collect (,operation x operator))))
+        (defmethod ,fun-name((vec ,vector-type) (operator integer))
+          (new-vec-from-list (loop for x in (to-list vec) collect (,operation x (float operator)))))))
 
 ;; Note: This has been reduces to simplified types because this file might
 ;; end up a few ten thousand lines long if I don't hold back.
 
-;; TODO: get this to work
-;; ;'vec3 'vec4))); (operation-list (list '* '+ '- '/)))
-; (eval-when (:compile-toplevel :load-toplevel :execute)
-; (eval-when (:compile-toplevel :load-toplevel :execute)
-; (loop for thing in (list 'vec3) do
-;                 (eval (macroexpand`(boilerplate add + ,thing))))
-
-;; This is an unholy function
-(loop for x in '(1 2 3) do
-        (format t "~%---------~%")
-        (loop for y in '(4 5 6) do
-                (format t "(~a,~a)" x y)))
-
+;; This is an unholy procedure
 (loop for fun-name in '(mul add div sub) for operation in '(* + / -) do
         (eval `(init-generic ,fun-name))
-        (loop for vec-type in '(vec2 vec3 vec4) do
-            (eval `(boilerplate ,fun-name ,operation ,vec-type))))
+        (loop for vector-type in '(vec2 vec3 vec4) do
+            (eval `(boilerplate-vec-operations ,fun-name ,operation ,vector-type))))
 
 ;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
-; (defgeneric invert(vector))
 
-; (defmethod invert((vector1 vec2))
-;  (mul vector1 -1))
+(defgeneric invert(vector))
 
-; (defmethod invert((vector1 vec3))
-;  (mul vector1 -1))
+(defmethod invert((vector1 vec2))
+ (mul vector1 -1))
 
-; (defmethod invert((vector1 vec4))
-;  (mul vector1 -1))
+(defmethod invert((vector1 vec3))
+ (mul vector1 -1))
+
+(defmethod invert((vector1 vec4))
+ (mul vector1 -1))
+
+
