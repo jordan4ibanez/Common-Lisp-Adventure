@@ -1,10 +1,3 @@
-(defconstant false nil)
-(defconstant true t)
-
-(defun yes()
-  true)
-(defun no()
-  false)
 
 (defun make-cd (title artist rating ripped)
   (list :title title :artist artist :rating rating :ripped ripped))
@@ -81,7 +74,7 @@
 
 ; (my-function :first 123)
 
-(defun where (&key title artist rating (ripped false ripped-p))
+(defun where (&key title artist rating (ripped nil ripped-p))
   #'(lambda (cd)
       (and
        (if title    (equal (getf cd :title)  title)  true)
