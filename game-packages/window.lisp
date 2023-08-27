@@ -1,6 +1,5 @@
 (defpackage #:window
-  (:nicknames :window)
-  (:use :cl :constants :cl-glfw3 :cl-opengl))
+  (:use :cl :constants :cl-glfw3 :cl-opengl :vector))
 
 (in-package :window)
 
@@ -9,6 +8,8 @@
           set-viewport
           quit-on-escape
           update-viewport))
+
+(defvar *window-size* (new-vec 0 0))
 
 ;; You have to reload the game to make this re-initialize unfortunately.
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
@@ -27,11 +28,12 @@
 
 (defun set-viewport (width height)
   (gl:viewport 0 0 width height)
-  (gl:matrix-mode :projection)
-  (gl:load-identity)
-  (gl:ortho -50 50 -50 50 -1 1)
-  (gl:matrix-mode :modelview)
-  (gl:load-identity))
+  )
+  ; (gl:matrix-mode :projection)
+  ; (gl:load-identity)
+  ; (gl:ortho -50 50 -50 50 -1 1)
+  ; (gl:matrix-mode :modelview)
+  ; (gl:load-identity))
 
 
 ;; (Code generator) You have to reload the game to make this re-initialize unfortunately.
