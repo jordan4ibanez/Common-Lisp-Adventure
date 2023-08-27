@@ -13,6 +13,7 @@
           to-list
           print-vec
           get-components
+          vec-type-component-amount
           get-x
           get-y
           get-z
@@ -78,6 +79,20 @@
 (defgeneric get-components(vec))
 (loop for vec-type in '(vec2 vec3 vec4) for return-val in '(2 3 4) do (eval `(init-get-components ,vec-type ,return-val)))
 
+;; A very specific function to help with macros. Maybe?
+;; Pass it 'vec2 'vec3 or 'vec4 and you get 2 3 or 4
+(defun vec-type-component-amount(vec-type)
+  (cond ((eql vec-type 'vec2) 2)
+        ((eql vec-type 'vec3) 3)
+        ((eql vec-type 'vec4) 4)
+        (t 0)))
+
+
+;; Now this is just absurd.
+(let ((count 1))
+  (loop for fun-name in '(get-x get-y get-z get-w) do (format t "(~a,~a)" count fun-name)
+  (setq count (+ count 1)))
+  )
 
 ;; Get X.
 (defgeneric get-x(vec)
@@ -121,10 +136,9 @@
 
 (defmethod get-w((vec vec4))
   (vec4-w vec))
-; (loop for vec-type in '()
-;       for vec-call in '(vec) do (print vec-type))
 
-  ;; To list.
+;; To list.
+
 (defgeneric to-list(vec))
 
 (defmethod to-list((vec vec2))
