@@ -164,9 +164,9 @@
                 (format t "(~a,~a)" x y)))
 
 (loop for fun-name in '(mul add div sub) for operation in '(* + / -) do
-        (eval (macroexpand `(init-generic ,fun-name)))
+        (eval `(init-generic ,fun-name))
         (loop for vec-type in '(vec2 vec3 vec4) do
-             (eval (macroexpand `(boilerplate ,fun-name ,operation ,vec-type)))))
+            (eval `(boilerplate ,fun-name ,operation ,vec-type))))
 
 ;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
 ; (defgeneric invert(vector))
