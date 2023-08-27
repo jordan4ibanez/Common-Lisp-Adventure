@@ -22,4 +22,3 @@
      (pos
        :initform :pos
        :accessor pos)))
-
