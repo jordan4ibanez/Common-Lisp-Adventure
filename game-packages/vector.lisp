@@ -12,6 +12,7 @@
           new-vec-from-list
           to-list
           print-vec
+          get-components
           get-x
           get-y
           get-z
@@ -69,6 +70,12 @@
 (defmethod print-vec((vec vec4))
   (format true "vec4(~a, ~a, ~a, ~a)" (vec4-x vec) (vec4-y vec) (vec4-z vec) (vec4-w vec)))
 
+;; Get number of components in the vector.
+(defgeneric get-components(vec))
+(defmethod get-components((vec vec2)) 2)
+(defmethod get-components((vec vec3)) 3)
+(defmethod get-components((vec vec4)) 4)
+
 ;; Get X.
 (defgeneric get-x(vec)
   (:documentation "Get the X component of a vector-2,3,4."))
@@ -111,7 +118,8 @@
 
 (defmethod get-w((vec vec4))
   (vec4-w vec))
-
+(loop for vec-type in '()
+      for vec-call in '(vec) do (print vec-type))
 
   ;; To list.
 (defgeneric to-list(vec))
@@ -165,3 +173,4 @@
  (mul vector1 -1))
 
 
+(defvar my-var (new-vec 0 0))
