@@ -10,7 +10,7 @@
           vec4
           new-vec
           new-vec-from-list
-          to-list
+          new-list-from-vec
           print-vec
           get-components
           vec-type-component-amount
@@ -45,16 +45,22 @@
   (w 0.0 :type float))
 
 ;; Constructor with auto dispatch. Just dumps integers into floating point.
-(defun new-vec(x y &optional z w)
-  (cond ((not (null w)) (make-vec4 :x (float x) :y (float y) :z (float z) :w (float w)))
-        ((not (null z)) (make-vec3 :x (float x) :y (float y) :z (float z)))
-        (t (make-vec2 :x (float x) :y (float y)))))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun new-vec(x y &optional z w)
+    (cond ((not (null w)) (make-vec4 :x (float x) :y (float y) :z (float z) :w (float w)))
+          ((not (null z)) (make-vec3 :x (float x) :y (float y) :z (float z)))
+          (t (make-vec2 :x (float x) :y (float y)))))
 
-;; Constructor with auto dispatch for lists. Just dumps integers into floating point.
-(defun new-vec-from-list(input-list)
- (cond ((= (length input-list) 2) (make-vec2 :x (float (nth 0 input-list)) :y (float (nth 1 input-list))))
-       ((= (length input-list) 3) (make-vec3 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list))))
-       ((= (length input-list) 4) (make-vec4 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list)) :w (float (nth 3 input-list))))))
+  ;; Constructor with auto dispatch for lists. Just dumps integers into floating point.
+  (defun new-vec-from-list(input-list)
+    (cond ((= (length input-list) 2) (make-vec2 :x (float (nth 0 input-list)) :y (float (nth 1 input-list))))
+          ((= (length input-list) 3) (make-vec3 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list))))
+          ((= (length input-list) 4) (make-vec4 :x (float (nth 0 input-list)) :y (float (nth 1 input-list)) :z (float (nth 2 input-list)) :w (float (nth 3 input-list))))))
+  
+  (defun new-list-from-vec(vec)
+    (cond ((eql (type-of vec) 'vec2) (list (get-x vec) (get-y vec)))
+          ((eql (type-of vec) 'vec3) (list (get-x vec) (get-y vec) (get-z vec)))
+          ((eql (type-of vec) 'vec4) (list (get-x vec) (get-y vec) (get-z vec) (get-w vec))))))
 
 ;; Functional slot access.
 ; (let ((test-vector (make-vec2 :x 0.0 :y 0.0)))
@@ -97,9 +103,9 @@
 
 ;; Now this is just absurd.
 ;; Combo runner for setters & getters, automatically inferred based on vector width.
-(defmacro compile-thing()
+(defmacro getters-and-setters()
   (cons 'progn 
-        (loop for axis in '(x y z w) for count in '(1 2 3 4) :nconc
+        (loop for axis in '(x y z w) for count in '(1 2 3 4) :nconc ;; nconc is a flat list for future reference.
                 (let ((fun-name-get (read-from-string (format nil "get-~a" axis)))
                       (fun-name-set (read-from-string (format nil "set-~a" axis))))
                   `(defgeneric ,fun-name-get(vec))
@@ -113,4 +119,16 @@
                                            (setf (,slot-call vec) new-value))
                                          (defmethod ,fun-name-set((vec ,vec-type)(new-value integer))
                                            (setf (,slot-call vec) (float new-value))))))))))))
-(compile-thing)
+(getters-and-setters)
+
+; (defmacro operations()
+;   (cons 'progn
+;         (loop for operation in '(+ - / *) for fun-name in '(add sub div mul) :nconc
+;                 (loop for vec-type in '(vec2 vec3 vec4) :nconc
+;                         ))))
+
+; (defgeneric inv (vec)
+;   (:documentation "Inverts a vector.")
+;   (:method ((vec vec2)) (mul vec -1))
+;   (:method ((vec vec2)) (print "hi"))
+;   (:method ((vec vec2)) (print "hi")))
