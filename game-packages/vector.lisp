@@ -26,7 +26,8 @@
           sub
           div
           mul
-          invert))
+          invert
+          cool))
 
 ;; Base structures. Data containers, do not need OOP flexibility.
 (defstruct vec2
@@ -121,10 +122,10 @@
 ; (defmacro operations()
 ;   (cons 'progn
 ;         (loop for operation in '(+ - / *) for fun-name in '(add sub div mul) :nconc
-;                 `(defgeneric ,fun-name(vec operand)))))
-;                 ; (loop for vec-type in '(vec2 vec3 vec4) :nconc
-;                         ; ))))
+;           `(defun cool() (print "bye")))))
 ; (operations)
+
+; (defun test-123() (print "hi"))
 
 ; (defgeneric inv (vec)
 ;   (:documentation "Inverts a vector.")
