@@ -79,99 +79,64 @@
 (defmacro init-generic (fun-name) `(progn (defgeneric ,fun-name(vec operator))))
 
 ;; Get number of components in the vector.
-(defmacro init-get-components(vec-type return-val) `(progn (defmethod get-components((vec ,vec-type)) ,return-val)))
 (defgeneric get-components(vec))
-(loop for vec-type in '(vec2 vec3 vec4) for return-val in '(2 3 4) do (eval `(init-get-components ,vec-type ,return-val)))
+(defmacro vector-sizes()
+  (cons 'progn (loop for vec-type in '(vec2 vec3 vec4) for return-val in '(2 3 4) :collect 
+       `(defmethod get-components((vec ,vec-type)) ,return-val))))
+      ;  `(init-get-components ,vec-type ,return-val)))
+(vector-sizes)
 
 ;; A very specific function to help with macros. Maybe?
 ;; Pass it 'vec2 'vec3 or 'vec4 and you get 2 3 or 4
-(defun vec-type-component-amount(vec-type)
-  (cond ((eql vec-type 'vec2) 2)
-        ((eql vec-type 'vec3) 3)
-        ((eql vec-type 'vec4) 4)
-        (t 0)))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun vec-type-component-amount(vec-type)
+    (cond ((eql vec-type 'vec2) 2)
+          ((eql vec-type 'vec3) 3)
+          ((eql vec-type 'vec4) 4)
+          (t 0))))
 
 ;; Now this is just absurd.
 ;; Combo runner for setters & getters, automatically inferred.
 ;; TODO -- This is a reference
-; (defmacro getter-setter()
-;   (cons 'progn (loop for axis in '(x y z w) for count in '(1 2 3 4) collect
-;           ; (format t "~a~%" fun-name)g
-;           (let ((fun-name-get (read-from-string (format nil "get-~a" axis)))
-;                 (fun-name-set (read-from-string (format nil "set-~a" axis))))
-;             ;; Set generics.
-;             `(defgeneric ,fun-name-get(vec))
-;             `(defgeneric ,fun-name-set(vec new-value))
-;             (loop for vec-type in '(vec2 vec3 vec4) collect
-;                     (if (<= count (vec-type-component-amount vec-type))
-;                         (let ((slot-call (read-from-string (format nil "~a-~a" vec-type axis))))
-;                             ; (format t "(~a, ~a, ~a, ~a, ~a)" count fun-name-set vec-type axis slot-call)
-;                             ;; Getter for xyzw
-;                             `(defmethod ,fun-name-get((vec ,vec-type)) 
-;                                   (,slot-call vec))
-;                             ;; Setter for xyzw
-;                             ;; Floating point new value.
-;                             `(defmethod ,fun-name-set((vec ,vec-type)(new-value float))
-;                                   (setf (,slot-call vec) new-value))
-;                             `(defmethod ,fun-name-set((vec ,vec-type)(new-value integer))
-;                                   (setf (,slot-call vec) (float new-value))))))))))
-;             ; (format t "~%")))
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defmacro compile-thing()
-    `(progn
-        (defun blah() (print "blah")))))
-
-;; To list.
-;; TODO: THIS IS CAUSING AN ERROR!!!
-;; TODO: This error is from the getters and setters not loading into memory
-; (defgeneric to-list(vec))
-
-; (defmethod to-list((vec vec2))
-;   (list (get-x vec) (get-y vec)))
-
-; (defmethod to-list((vec vec3))
-;   (list (get-x vec) (get-y vec) (get-z vec)))
-
-; (defmethod to-list((vec vec4))
-;   (list (get-x vec) (get-y vec) (get-z vec) (get-w vec)))
-
-;; TODO: END ERROR!!!
-
-; ;; NOTE: This is where macros begin in this file.
-
-; ;; Remove a bunch of boilerplate functions.
-; (defmacro boilerplate-vec-operations (fun-name operation vector-type)
-;     `(progn
-;         (defmethod ,fun-name((vec integer) (operator integer)) (print "hi"))
-;         (defmethod ,fun-name((vec ,vector-type) (operator ,vector-type))
-;           (new-vec-from-list (loop for x in (to-list vec) for y in (to-list operator) collect (,operation x y))))
-;         (defmethod ,fun-name((vec ,vector-type) (operator float))
-;           (new-vec-from-list (loop for x in (to-list vec) collect (,operation x operator))))
-;         (defmethod ,fun-name((vec ,vector-type) (operator integer))
-;           (new-vec-from-list (loop for x in (to-list vec) collect (,operation x (float operator)))))))
-
-; ;; Note: This has been reduces to simplified types because this file might
-; ;; end up a few ten thousand lines long if I don't hold back.
-
-; ;; This is an unholy procedure
-; ; (loop for fun-name in '(mul add div sub) for operation in '(* + / -) do
-; ;         (eval `(init-generic ,fun-name))
-; ;         (loop for vector-type in '(vec2 vec3 vec4) do
-; ;             (eval `(boilerplate-vec-operations ,fun-name ,operation ,vector-type))))
-
-; ; ;; Invert (Vec * -1). Useful for random things. Wordy alternative to (mul vec -1)
-
-; ; (defgeneric invert(vector))
-
-; ; (defmethod invert((vector1 vec2))
-; ;  (mul vector1 -1))
-
-; ; (defmethod invert((vector1 vec3))
-; ;  (mul vector1 -1))
-
-; ; (defmethod invert((vector1 vec4))
-; ;  (mul vector1 -1))
+(defmacro getter-setter()
+  (cons 'progn (loop for axis in '(x y z w) for count in '(1 2 3 4) collect
+          ; (format t "~a~%" fun-name)g
+          (let ((fun-name-get (read-from-string (format nil "get-~a" axis)))
+                (fun-name-set (read-from-string (format nil "set-~a" axis))))
+            ;; Set generics.
+            `(defgeneric ,fun-name-get(vec))
+            `(defgeneric ,fun-name-set(vec new-value))
+            (loop for vec-type in '(vec2 vec3 vec4) collect
+                    (if (<= count (vec-type-component-amount vec-type))
+                        (let ((slot-call (read-from-string (format nil "~a-~a" vec-type axis))))
+                            ; (format t "(~a, ~a, ~a, ~a, ~a)" count fun-name-set vec-type axis slot-call)
+                            ;; Getter for xyzw
+                            `(defmethod ,fun-name-get((vec ,vec-type)) 
+                                  (,slot-call vec))
+                            ;; Setter for xyzw
+                            ;; Floating point new value.
+                            `(defmethod ,fun-name-set((vec ,vec-type)(new-value float))
+                                  (setf (,slot-call vec) new-value))
+                            `(defmethod ,fun-name-set((vec ,vec-type)(new-value integer))
+                                  (setf (,slot-call vec) (float new-value))))))))))
+            ; (format t "~%")))
 
 
-; ; (defvar my-var (new-vec 0 0))
+(defmacro compile-thing()
+  (cons 'progn 
+        (loop for axis in '(x y z w) for count in '(1 2 3 4) :nconc
+                (let ((fun-name-get (read-from-string (format nil "get-~a" axis)))
+                      (fun-name-set (read-from-string (format nil "set-~a" axis))))
+                  `(defgeneric ,fun-name-get(vec))
+                  `(defgeneric ,fun-name-set(vec new-value))
+                  (loop for vec-type in '(vec2 vec3 vec4) :nconc
+                          (let ((slot-call (read-from-string (format nil "~a-~a" vec-type axis))))
+                            (if (<= count (vec-type-component-amount vec-type))
+                                (progn `(
+                                            (defmethod ,fun-name-get((vec ,vec-type)) (,slot-call vec))
+                                            (defmethod ,fun-name-set((vec ,vec-type)(new-value float))
+                                                (setf (,slot-call vec) new-value))
+                                            (defmethod ,fun-name-set((vec ,vec-type)(new-value integer))
+                                                (setf (,slot-call vec) (float new-value))))))))))))
+                                            
+(compile-thing)
