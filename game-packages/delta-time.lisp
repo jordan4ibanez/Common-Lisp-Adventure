@@ -1,6 +1,6 @@
 (defpackage #:delta-time
   (:nicknames :delta)
-  (:use :cl :cl-glfw3 :constants))
+  (:use :cl :cl-glfw3))
 
 (in-package :delta-time)
 
@@ -48,9 +48,9 @@
            (setq fps fps-accumulator)
            (setq fps-accumulator 0)
            (setq frame-time-accumulator (- frame-time-accumulator 1.0))
-           (setq fps-updated true)))
+           (setq fps-updated t)))
         ;; Else there's no update, reset flag.
-        (true (progn)
+        (t (progn)
               (setq fps-updated nil))))
 
 
@@ -71,6 +71,6 @@
   (let ((current-time (get-floating-time)))
     (setq delta-time (/ (- current-time old-time) (get-floating-time-units)))
     ;; Uncomment this program to test against glfw3! (you also gotta uncomment the other function)
-    ; (format true "BEGIN TEST:~%GLFW: ~a~%CL:   ~a~%END TEST~%" (deprecated-glfw-calculate-delta-time) delta-time)
+    ; (format t "BEGIN TEST:~%GLFW: ~a~%CL:   ~a~%END TEST~%" (deprecated-glfw-calculate-delta-time) delta-time)
     (setq old-time current-time))
   (calculate-fps))

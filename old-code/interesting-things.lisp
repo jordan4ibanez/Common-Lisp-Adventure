@@ -6,7 +6,7 @@
   (setq *global-thing* (+ *global-thing* 1.1))
   (print *global-thing*))
 
-(let ((my-cool-vector (make-array 0 :fill-pointer 0 :adjustable true)))
+(let ((my-cool-vector (make-array 0 :fill-pointer 0 :adjustable t)))
   (dotimes (number 10)
     (vector-push-extend (* number 3) my-cool-vector))
   (print my-cool-vector))
@@ -14,7 +14,7 @@
 ;; Java wrappered notes
 
 ; note: (not X) where X is a (func) or boolean
-(setf *random-state* (make-random-state true))
+(setf *random-state* (make-random-state t))
 
 ; for (int number = 10; number < 10; number++) {scope}
 (dotimes (number 10)

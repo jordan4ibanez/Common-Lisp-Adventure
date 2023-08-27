@@ -9,7 +9,7 @@
 
 (defun dump-db()
   (dolist (cd *db*)
-    (format true "~{~a:~10t~a~%~}~%" cd)))
+    (format t "~{~a:~10t~a~%~}~%" cd)))
 
 (defun clear-db()
   (setq *db* nil))
@@ -28,7 +28,7 @@
   (make-cd
     (prompt-read "Title")
     (prompt-read "Artist")
-    (or (parse-integer (prompt-read "Rating") :junk-allowed true) 0)
+    (or (parse-integer (prompt-read "Rating") :junk-allowed t) 0)
     (y-or-n-p "Ripped")))
 
 (defun add-cds()
@@ -51,8 +51,8 @@
 
 (print "starting")
 
-(add-record (make-cd "come as you are" "nirvana" 10 true))
-(add-record (make-cd "come as you are" "nirvana" 10 true))
+(add-record (make-cd "come as you are" "nirvana" 10 t))
+(add-record (make-cd "come as you are" "nirvana" 10 trtue))
 
 ; (print *db*)
 ; (print "ahhhhhhhhhhhhhhh")
@@ -77,10 +77,10 @@
 (defun where (&key title artist rating (ripped nil ripped-p))
   #'(lambda (cd)
       (and
-       (if title    (equal (getf cd :title)  title)  true)
-       (if artist   (equal (getf cd :artist) artist) true)
-       (if rating   (equal (getf cd :rating) rating) true)
-       (if ripped-p (equal (getf cd :ripped) ripped) true))))
+       (if title    (equal (getf cd :title)  title)  t)
+       (if artist   (equal (getf cd :artist) artist) t)
+       (if rating   (equal (getf cd :rating) rating) t)
+       (if ripped-p (equal (getf cd :ripped) ripped) t))))
 
 ; (defun select-by-artist (artist)
 ;   (remove-if-not
@@ -121,4 +121,4 @@
 (setq my-cool-plist '(:a "abadaba" :b "clabashalafa" :c "cool"))
 
 ;; I literally have no idea why, but #'cddr is two commands combined that loop in pairs on a list.
-(loop for (key value) on my-cool-plist by #'cddr do (format true "(~a,~a) " key value))
+(loop for (key value) on my-cool-plist by #'cddr do (format t "(~a,~a) " key value))

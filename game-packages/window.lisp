@@ -1,5 +1,5 @@
 (defpackage #:window
-  (:use :cl :constants :cl-glfw3 :cl-opengl :vector))
+  (:use :cl :cl-glfw3 :cl-opengl :vector))
 
 (in-package :window)
 
@@ -43,5 +43,5 @@
 
 ;; So we shove it into a custom thing WOOOO!
 (defun pass-through-update-viewport(w h)
-  (format true "window resized to ~a, ~a~%" w h)
+  (format t "window resized to ~a, ~a~%" w h)
   (set-viewport w h))

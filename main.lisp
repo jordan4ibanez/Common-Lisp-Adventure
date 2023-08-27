@@ -8,8 +8,6 @@
   (ql:quickload :trivial-main-thread)
   (use-package :trivial-main-thread)
    ;; Now step into local packages.
-  ; (load "game-packages/constants.lisp")
-  ; (use-package :constants)
   (load "game-packages/delta-time.lisp")
   (use-package :delta-time)
   (load "game-packages/vector.lisp")

@@ -93,27 +93,29 @@
 
 ;; Now this is just absurd.
 ;; Combo runner for setters & getters, automatically inferred.
-(loop for axis in '(x y z w) for count in '(1 2 3 4) collect
-        ; (format t "~a~%" fun-name)g
-        (let ((fun-name-get (read-from-string (format nil "get-~a" axis)))
-              (fun-name-set (read-from-string (format nil "set-~a" axis))))
-          ;; Set generics.
-          (eval `(defgeneric ,fun-name-get(vec)))
-          (eval `(defgeneric ,fun-name-set(vec new-value)))
-          (loop for vec-type in '(vec2 vec3 vec4) collect
-                  (if (<= count (vec-type-component-amount vec-type))
-                      (let ((slot-call (read-from-string (format nil "~a-~a" vec-type axis))))
-                          ; (format t "(~a, ~a, ~a, ~a, ~a)" count fun-name-set vec-type axis slot-call)
-                          ;; Getter for xyzw
-                          (eval `(defmethod ,fun-name-get((vec ,vec-type)) 
-                                 (,slot-call vec)))
-                          ;; Setter for xyzw
-                          ;; Floating point new value.
-                          (eval `(defmethod ,fun-name-set((vec ,vec-type)(new-value float))
-                                 (setf (,slot-call vec) new-value)))
-                          (eval `(defmethod ,fun-name-set((vec ,vec-type)(new-value integer))
-                                 (setf (,slot-call vec) (float new-value)))))))))
-          ; (format t "~%")))
+(defmacro getter-setter()
+  (cons 'progn (loop for axis in '(x y z w) for count in '(1 2 3 4) collect
+          ; (format t "~a~%" fun-name)g
+          (let ((fun-name-get (read-from-string (format nil "get-~a" axis)))
+                (fun-name-set (read-from-string (format nil "set-~a" axis))))
+            ;; Set generics.
+            `(defgeneric ,fun-name-get(vec))
+            `(defgeneric ,fun-name-set(vec new-value))
+            (loop for vec-type in '(vec2 vec3 vec4) collect
+                    (if (<= count (vec-type-component-amount vec-type))
+                        (let ((slot-call (read-from-string (format nil "~a-~a" vec-type axis))))
+                            ; (format t "(~a, ~a, ~a, ~a, ~a)" count fun-name-set vec-type axis slot-call)
+                            ;; Getter for xyzw
+                            `(defmethod ,fun-name-get((vec ,vec-type)) 
+                                  (,slot-call vec))
+                            ;; Setter for xyzw
+                            ;; Floating point new value.
+                            `(defmethod ,fun-name-set((vec ,vec-type)(new-value float))
+                                  (setf (,slot-call vec) new-value))
+                            `(defmethod ,fun-name-set((vec ,vec-type)(new-value integer))
+                                  (setf (,slot-call vec) (float new-value))))))))))
+            ; (format t "~%")))
+
 
 ;; To list.
 ;; TODO: THIS IS CAUSING AN ERROR!!!
