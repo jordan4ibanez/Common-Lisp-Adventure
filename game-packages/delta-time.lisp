@@ -27,7 +27,7 @@
 (defvar frame-time-accumulator 0.0)
 (defvar fps-accumulator 0)
 (defvar fps 0)
-(defvar fps-updated false)
+(defvar fps-updated nil)
 
 ;; Wrapper function because mutability of delta-time is probably extremely bad.
 (defun get-delta()
@@ -51,7 +51,7 @@
            (setq fps-updated true)))
         ;; Else there's no update, reset flag.
         (true (progn)
-              (setq fps-updated false))))
+              (setq fps-updated nil))))
 
 
 ;; Deprecated delta time calculation. Calculates to seconds.
