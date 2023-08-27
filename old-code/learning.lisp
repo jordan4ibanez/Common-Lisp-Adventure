@@ -122,3 +122,10 @@
     #'(lambda (row)
         (print row)
         row) *test*)
+
+
+;; P list aka properly list
+(setq my-cool-plist '(:a "abadaba" :b "clabashalafa" :c "cool"))
+
+;; I literally have no idea why, but #'cddr is two commands combined that loop in pairs on a list.
+(loop for (key value) on my-cool-plist by #'cddr do (format true "(~a,~a) " key value))
