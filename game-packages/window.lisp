@@ -18,7 +18,7 @@
     (set-window-should-close))
   (when (and (eq key :e) (eq action :press))
     (print "cool"))
-  (when (yes) (print "hi")))
+  (when t (print "hi")))
 
 (defun render ()
   (gl:clear :color-buffer)
