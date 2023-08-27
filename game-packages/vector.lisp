@@ -96,7 +96,7 @@
           (t 0))))
 
 ;; Now this is just absurd.
-;; Combo runner for setters & getters, automatically inferred.
+;; Combo runner for setters & getters, automatically inferred based on vector width.
 (defmacro compile-thing()
   (cons 'progn 
         (loop for axis in '(x y z w) for count in '(1 2 3 4) :nconc
