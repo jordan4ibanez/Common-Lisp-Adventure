@@ -6,20 +6,20 @@
 
 (defpackage #:entity
   (:nicknames :ent)
-  (:use :cl :constants :delta-time))
+  (:use :cl :constants :delta-time :vector))
 
 (in-package :entity)
 
-(export '(test-function))
-
-(defun test-function()
-  (print "test success"))
+(export '(
+          entity
+          ))
 
 
 (defclass entity ()
-  ((name
-    :initarg :name
-    :accessor name)
-   (lisper
-    :initform nil
-    :accessor lisper)))
+    ((id
+       :initarg :id
+       :accessor id)
+     (pos
+       :initform :pos
+       :accessor pos)))
+
