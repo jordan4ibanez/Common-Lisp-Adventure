@@ -14,8 +14,12 @@
   (use-package :delta-time)
   (load "game-packages/vector.lisp")
   (use-package :vector)
+  (load "game-packages/matrix.lisp")
+  (use-package :matrix)
   (load "game-packages/entity.lisp")
   (use-package :entity)
+  (load "game-packages/internal-opengl.lisp")
+  (use-package :internal-opengl)
   (load "game-packages/window.lisp")
   (use-package :window))
 
@@ -56,8 +60,5 @@
 (defun run()
   (sb-int:with-float-traps-masked (:invalid)
     (main-loop)))
-
-
-
 
 (run)
