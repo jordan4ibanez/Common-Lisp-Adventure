@@ -34,8 +34,7 @@
           sub
           div
           mul
-          invert
-          cool))
+          inv))
 
 ;; Base structures. Data containers, do not need OOP flexibility.
 (defstruct vec2
@@ -169,7 +168,7 @@
 ;; OOP operations.
 
 (defgeneric add (vec other)
-  (:documentation "Add a vector to other vector of same type or a number")
+  (:documentation "Add a vector to other vector of same type or a number.~%\"vec\" is mutated during this procedure!")
   ;; Vec + Vec.
   (:method ((vec vec2) (other vec2))
            (new-vec
@@ -202,7 +201,7 @@
              (+ (get-y vec) other)
              (+ (get-z vec) other)
              (+ (get-w vec) other)))
-  ;; Vec + scalar integer
+  ;; Vec + scalar integer.
   (:method ((vec vec2) (other integer))
            (new-vec
              (+ (get-x vec) (float other))
@@ -220,7 +219,7 @@
              (+ (get-w vec) (float other)))))
 
 (defgeneric sub (vec other)
-  (:documentation "Subtract a vector to other vector of same type or a number")
+  (:documentation "Subtract a vector to other vector of same type or a number.~%\"vec\" is mutated during this procedure!")
   ;; Vec - Vec.
   (:method ((vec vec2) (other vec2))
            (new-vec
@@ -253,7 +252,7 @@
              (- (get-y vec) other)
              (- (get-z vec) other)
              (- (get-w vec) other)))
-  ;; Vec - scalar integer
+  ;; Vec - scalar integer.
   (:method ((vec vec2) (other integer))
            (new-vec
              (- (get-x vec) (float other))
@@ -270,9 +269,322 @@
              (- (get-z vec) (float other))
              (- (get-w vec) (float other)))))
 
+(defgeneric mul (vec other)
+  (:documentation "Multiply a vector to other vector of same type or a number.~%\"vec\" is mutated during this procedure!")
+  ;; Vec * Vec.
+  (:method ((vec vec2) (other vec2))
+           (new-vec
+             (* (get-x vec) (get-x other))
+             (* (get-y vec) (get-y other))))
+  (:method ((vec vec3) (other vec3))
+           (new-vec
+             (* (get-x vec) (get-x other))
+             (* (get-y vec) (get-y other))
+             (* (get-z vec) (get-z other))))
+  (:method ((vec vec4) (other vec4))
+           (new-vec
+             (* (get-x vec) (get-x other))
+             (* (get-y vec) (get-y other))
+             (* (get-z vec) (get-z other))
+             (* (get-w vec) (get-w other))))
+  ;; Vec * scalar float.
+  (:method ((vec vec2) (other float))
+           (new-vec
+             (* (get-x vec) other)
+             (* (get-y vec) other)))
+  (:method ((vec vec3) (other float))
+           (new-vec
+             (* (get-x vec) other)
+             (* (get-y vec) other)
+             (* (get-z vec) other)))
+  (:method ((vec vec4) (other float))
+           (new-vec
+             (* (get-x vec) other)
+             (* (get-y vec) other)
+             (* (get-z vec) other)
+             (* (get-w vec) other)))
+  ;; Vec * scalar integer.
+  (:method ((vec vec2) (other integer))
+           (new-vec
+             (* (get-x vec) (float other))
+             (* (get-y vec) (float other))))
+  (:method ((vec vec3) (other integer))
+           (new-vec
+             (* (get-x vec) (float other))
+             (* (get-y vec) (float other))
+             (* (get-z vec) (float other))))
+  (:method ((vec vec4) (other integer))
+           (new-vec
+             (* (get-x vec) (float other))
+             (* (get-y vec) (float other))
+             (* (get-z vec) (float other))
+             (* (get-w vec) (float other)))))
 
-; (defgeneric inv (vec)
-;   (:documentation "Inverts a vector.")
-;   (:method ((vec vec2)) (mul vec -1))
-;   (:method ((vec vec2)) (print "hi"))
-;   (:method ((vec vec2)) (print "hi")))
+
+(defgeneric div (vec other)
+  (:documentation "Divide a vector to other vector of same type or a number.~%\"vec\" is mutated during this procedure!")
+  ;; Vec / Vec.
+  (:method ((vec vec2) (other vec2))
+           (new-vec
+             (/ (get-x vec) (get-x other))
+             (/ (get-y vec) (get-y other))))
+  (:method ((vec vec3) (other vec3))
+           (new-vec
+             (/ (get-x vec) (get-x other))
+             (/ (get-y vec) (get-y other))
+             (/ (get-z vec) (get-z other))))
+  (:method ((vec vec4) (other vec4))
+           (new-vec
+             (/ (get-x vec) (get-x other))
+             (/ (get-y vec) (get-y other))
+             (/ (get-z vec) (get-z other))
+             (/ (get-w vec) (get-w other))))
+  ;; Vec / scalar float.
+  (:method ((vec vec2) (other float))
+           (new-vec
+             (/ (get-x vec) other)
+             (/ (get-y vec) other)))
+  (:method ((vec vec3) (other float))
+           (new-vec
+             (/ (get-x vec) other)
+             (/ (get-y vec) other)
+             (/ (get-z vec) other)))
+  (:method ((vec vec4) (other float))
+           (new-vec
+             (/ (get-x vec) other)
+             (/ (get-y vec) other)
+             (/ (get-z vec) other)
+             (/ (get-w vec) other)))
+  ;; Vec / scalar integer.
+  (:method ((vec vec2) (other integer))
+           (new-vec
+             (/ (get-x vec) (float other))
+             (/ (get-y vec) (float other))))
+  (:method ((vec vec3) (other integer))
+           (new-vec
+             (/ (get-x vec) (float other))
+             (/ (get-y vec) (float other))
+             (/ (get-z vec) (float other))))
+  (:method ((vec vec4) (other integer))
+           (new-vec
+             (/ (get-x vec) (float other))
+             (/ (get-y vec) (float other))
+             (/ (get-z vec) (float other))
+             (/ (get-w vec) (float other)))))
+
+
+;; Immutable operations.
+
+(defgeneric add-new (vec other)
+  (:documentation "Add a vector to other vector of same type or a number. Returns a NEW vector!")
+  ;; Vec + Vec.
+  (:method ((vec vec2) (other vec2))
+           (new-vec
+             (+ (get-x vec) (get-x other))
+             (+ (get-y vec) (get-y other))))
+  (:method ((vec vec3) (other vec3))
+           (new-vec
+             (+ (get-x vec) (get-x other))
+             (+ (get-y vec) (get-y other))
+             (+ (get-z vec) (get-z other))))
+  (:method ((vec vec4) (other vec4))
+           (new-vec
+             (+ (get-x vec) (get-x other))
+             (+ (get-y vec) (get-y other))
+             (+ (get-z vec) (get-z other))
+             (+ (get-w vec) (get-w other))))
+  ;; Vec + scalar float.
+  (:method ((vec vec2) (other float))
+           (new-vec
+             (+ (get-x vec) other)
+             (+ (get-y vec) other)))
+  (:method ((vec vec3) (other float))
+           (new-vec
+             (+ (get-x vec) other)
+             (+ (get-y vec) other)
+             (+ (get-z vec) other)))
+  (:method ((vec vec4) (other float))
+           (new-vec
+             (+ (get-x vec) other)
+             (+ (get-y vec) other)
+             (+ (get-z vec) other)
+             (+ (get-w vec) other)))
+  ;; Vec + scalar integer.
+  (:method ((vec vec2) (other integer))
+           (new-vec
+             (+ (get-x vec) (float other))
+             (+ (get-y vec) (float other))))
+  (:method ((vec vec3) (other integer))
+           (new-vec
+             (+ (get-x vec) (float other))
+             (+ (get-y vec) (float other))
+             (+ (get-z vec) (float other))))
+  (:method ((vec vec4) (other integer))
+           (new-vec
+             (+ (get-x vec) (float other))
+             (+ (get-y vec) (float other))
+             (+ (get-z vec) (float other))
+             (+ (get-w vec) (float other)))))
+
+(defgeneric sub-new (vec other)
+  (:documentation "Subtract a vector to other vector of same type or a number. Returns a NEW vector!")
+  ;; Vec - Vec.
+  (:method ((vec vec2) (other vec2))
+           (new-vec
+             (- (get-x vec) (get-x other))
+             (- (get-y vec) (get-y other))))
+  (:method ((vec vec3) (other vec3))
+           (new-vec
+             (- (get-x vec) (get-x other))
+             (- (get-y vec) (get-y other))
+             (- (get-z vec) (get-z other))))
+  (:method ((vec vec4) (other vec4))
+           (new-vec
+             (- (get-x vec) (get-x other))
+             (- (get-y vec) (get-y other))
+             (- (get-z vec) (get-z other))
+             (- (get-w vec) (get-w other))))
+  ;; Vec - scalar float.
+  (:method ((vec vec2) (other float))
+           (new-vec
+             (- (get-x vec) other)
+             (- (get-y vec) other)))
+  (:method ((vec vec3) (other float))
+           (new-vec
+             (- (get-x vec) other)
+             (- (get-y vec) other)
+             (- (get-z vec) other)))
+  (:method ((vec vec4) (other float))
+           (new-vec
+             (- (get-x vec) other)
+             (- (get-y vec) other)
+             (- (get-z vec) other)
+             (- (get-w vec) other)))
+  ;; Vec - scalar integer.
+  (:method ((vec vec2) (other integer))
+           (new-vec
+             (- (get-x vec) (float other))
+             (- (get-y vec) (float other))))
+  (:method ((vec vec3) (other integer))
+           (new-vec
+             (- (get-x vec) (float other))
+             (- (get-y vec) (float other))
+             (- (get-z vec) (float other))))
+  (:method ((vec vec4) (other integer))
+           (new-vec
+             (- (get-x vec) (float other))
+             (- (get-y vec) (float other))
+             (- (get-z vec) (float other))
+             (- (get-w vec) (float other)))))
+
+(defgeneric mul-new (vec other)
+  (:documentation "Multiply a vector to other vector of same type or a number. Returns a NEW vector!")
+  ;; Vec * Vec.
+  (:method ((vec vec2) (other vec2))
+           (new-vec
+             (* (get-x vec) (get-x other))
+             (* (get-y vec) (get-y other))))
+  (:method ((vec vec3) (other vec3))
+           (new-vec
+             (* (get-x vec) (get-x other))
+             (* (get-y vec) (get-y other))
+             (* (get-z vec) (get-z other))))
+  (:method ((vec vec4) (other vec4))
+           (new-vec
+             (* (get-x vec) (get-x other))
+             (* (get-y vec) (get-y other))
+             (* (get-z vec) (get-z other))
+             (* (get-w vec) (get-w other))))
+  ;; Vec * scalar float.
+  (:method ((vec vec2) (other float))
+           (new-vec
+             (* (get-x vec) other)
+             (* (get-y vec) other)))
+  (:method ((vec vec3) (other float))
+           (new-vec
+             (* (get-x vec) other)
+             (* (get-y vec) other)
+             (* (get-z vec) other)))
+  (:method ((vec vec4) (other float))
+           (new-vec
+             (* (get-x vec) other)
+             (* (get-y vec) other)
+             (* (get-z vec) other)
+             (* (get-w vec) other)))
+  ;; Vec * scalar integer.
+  (:method ((vec vec2) (other integer))
+           (new-vec
+             (* (get-x vec) (float other))
+             (* (get-y vec) (float other))))
+  (:method ((vec vec3) (other integer))
+           (new-vec
+             (* (get-x vec) (float other))
+             (* (get-y vec) (float other))
+             (* (get-z vec) (float other))))
+  (:method ((vec vec4) (other integer))
+           (new-vec
+             (* (get-x vec) (float other))
+             (* (get-y vec) (float other))
+             (* (get-z vec) (float other))
+             (* (get-w vec) (float other)))))
+
+
+(defgeneric div-new (vec other)
+  (:documentation "Divide a vector to other vector of same type or a number. Returns a NEW vector!")
+  ;; Vec / Vec.
+  (:method ((vec vec2) (other vec2))
+           (new-vec
+             (/ (get-x vec) (get-x other))
+             (/ (get-y vec) (get-y other))))
+  (:method ((vec vec3) (other vec3))
+           (new-vec
+             (/ (get-x vec) (get-x other))
+             (/ (get-y vec) (get-y other))
+             (/ (get-z vec) (get-z other))))
+  (:method ((vec vec4) (other vec4))
+           (new-vec
+             (/ (get-x vec) (get-x other))
+             (/ (get-y vec) (get-y other))
+             (/ (get-z vec) (get-z other))
+             (/ (get-w vec) (get-w other))))
+  ;; Vec / scalar float.
+  (:method ((vec vec2) (other float))
+           (new-vec
+             (/ (get-x vec) other)
+             (/ (get-y vec) other)))
+  (:method ((vec vec3) (other float))
+           (new-vec
+             (/ (get-x vec) other)
+             (/ (get-y vec) other)
+             (/ (get-z vec) other)))
+  (:method ((vec vec4) (other float))
+           (new-vec
+             (/ (get-x vec) other)
+             (/ (get-y vec) other)
+             (/ (get-z vec) other)
+             (/ (get-w vec) other)))
+  ;; Vec / scalar integer.
+  (:method ((vec vec2) (other integer))
+           (new-vec
+             (/ (get-x vec) (float other))
+             (/ (get-y vec) (float other))))
+  (:method ((vec vec3) (other integer))
+           (new-vec
+             (/ (get-x vec) (float other))
+             (/ (get-y vec) (float other))
+             (/ (get-z vec) (float other))))
+  (:method ((vec vec4) (other integer))
+           (new-vec
+             (/ (get-x vec) (float other))
+             (/ (get-y vec) (float other))
+             (/ (get-z vec) (float other))
+             (/ (get-w vec) (float other)))))
+
+(defgeneric inv (vec)
+  (:documentation "Inverts a vector.")
+  (:method ((vec vec2))
+           (setf (vec2-x vec) (* (get-x vec) -1))
+           (setf (vec2-y vec) (* (get-y vec) -1)))
+  (:method ((vec vec3)) (setq vec (mul vec -1.0)))
+  (:method ((vec vec4)) (setq vec (mul vec -1.0))))
+
