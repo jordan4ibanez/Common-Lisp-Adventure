@@ -6,7 +6,7 @@
 
 (defpackage #:entity
   (:nicknames :ent)
-  (:use :cl :delta-time :vector))
+  (:use :cl :delta-time :vector :game-math))
 
 (in-package :entity)
 

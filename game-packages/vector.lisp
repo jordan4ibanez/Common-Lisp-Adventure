@@ -943,7 +943,8 @@ Returns a new vec4"
     (/ (get-w vec) (float w))))
 
 (defgeneric inv (vec)
-  (:documentation "Inverts a vector.")
+  (:documentation "Inverts a vec.")
   (:method ((vec vec2)) (mul vec -1) vec)
   (:method ((vec vec3)) (mul vec -1) vec)
   (:method ((vec vec4)) (mul vec -1) vec))
+
