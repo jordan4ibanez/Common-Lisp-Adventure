@@ -67,12 +67,34 @@
                  ((eq size 3) (make-vec3 :x 0.0 :y 0.0 :z 0.0))
                  ((eq size 4) (make-vec4 :x 0.0 :y 0.0 :z 0.0 :w 0.0)))))
 
-;; Simple vec cloning utility.
+;; Simple vec cloning utility. Creates a new vec.
 (defgeneric clone-vec (vec)
-  (:documentation "Clone a vector.")
+  (:documentation "Clone a vector. Creates a new vec.")
   (:method ((vec vec2)) (new-vec (get-x vec) (get-y vec)))
   (:method ((vec vec3)) (new-vec (get-x vec) (get-y vec) (get-z vec)))
   (:method ((vec vec4)) (new-vec (get-x vec) (get-y vec) (get-z vec) (get-w vec))))
+
+;; Clones one vector INTO another.
+;; So (clone-into-vec A B) A will take all the values of B.
+(defgeneric clone-into-vec (vec other)
+  (:documentation "Clones a vector into another.
+   (clone-into-vec A B) A takes on all values of B.
+   Chainable.")
+  (:method ((vec vec2) (other vec2))
+           (set-x vec (get-x other))
+           (set-y vec (get-y other))
+           vec)
+  (:method ((vec vec3) (other vec3))
+           (set-x vec (get-x other))
+           (set-y vec (get-y other))
+           (set-z vec (get-z other))
+           vec)
+  (:method ((vec vec4) (other vec4))
+           (set-x vec (get-x other))
+           (set-y vec (get-y other))
+           (set-z vec (get-z other))
+           (set-w vec (get-w other))
+           vec))
 
 ;; Constructor with auto dispatch for lists. Just dumps integers into floating point.
 (defun new-vec-from-list (input-list)
