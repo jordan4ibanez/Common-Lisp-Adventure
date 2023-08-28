@@ -6,9 +6,11 @@
 ;; If you would like to implement this as a macro, see "macro.lisp" in
 ;; the root directory. That should get you started.
 
+;;TODO: Translate JOML.
+
 (defpackage #:vector
   (:nicknames :vec)
-  (:use :cl))
+  (:use :cl :game-math :matrix))
 
 (in-package :vector)
 
