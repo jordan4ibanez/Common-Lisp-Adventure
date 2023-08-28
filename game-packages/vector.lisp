@@ -16,14 +16,14 @@
           vec2
           vec3
           vec4
+          new-vec
           blank-vec
           clone-vec
-          new-vec
+          clone-into-vec
           new-vec-from-list
           new-list-from-vec
-          print-vec
-          get-components
           vec-type-component-amount
+          print-vec
           get-x
           get-y
           get-z
@@ -32,10 +32,35 @@
           set-y
           set-z
           set-w
+          set-vec2
+          set-vec3
+          set-vec4
           add
           sub
-          div
           mul
+          div
+          vec2-add
+          vec3-add
+          vec4-add
+          vec2-sub
+          vec3-sub
+          vec4-sub
+          vec2-mul
+          vec3-mul
+          vec4-mul
+          vec2-div
+          vec3-div
+          vec4-div
+          add-new
+          sub-new
+          mul-new
+          div-new
+          vec2-add-new
+          vec3-add-new
+          vec4-add-new
+          vec2-sub-new
+          vec3-add-new
+          vec4-add-new
           inv))
 
 ;; Base structures. Data containers, do not need OOP flexibility.
@@ -77,9 +102,9 @@
 ;; Clones one vector INTO another.
 ;; So (clone-into-vec A B) A will take all the values of B.
 (defgeneric clone-into-vec (vec other)
-  (:documentation "Clones a vector into another.
-   (clone-into-vec A B) A takes on all values of B.
-   Chainable.")
+(:documentation "Clones a vector into another.
+(clone-into-vec A B) A takes on all values of B.
+Chainable.")
   (:method ((vec vec2) (other vec2))
            (set-x vec (get-x other))
            (set-y vec (get-y other))
@@ -149,8 +174,8 @@
 ;; Returns the modified vector.
 
 (defgeneric set-x (vec new-value)
-  (:documentation "Set X component of vec2 vec3 vec4.
-   Returns the modified vector.")
+(:documentation "Set X component of vec2 vec3 vec4.
+Returns the modified vector.")
   ;; Float.
   (:method ((vec vec2) (new-value float))
            (setf (vec2-x vec) new-value)
@@ -173,8 +198,8 @@
            vec))
 
 (defgeneric set-y (vec new-value)
-  (:documentation "Set Y component of vec2 vec3 vec4.
-   Returns the modified vector.")
+(:documentation "Set Y component of vec2 vec3 vec4.
+Returns the modified vector.")
   ;; Float.
   (:method ((vec vec2) (new-value float))
            (setf (vec2-y vec) new-value)
@@ -197,8 +222,8 @@
            vec))
 
 (defgeneric set-z (vec new-value)
-  (:documentation "Set Z component of vec3 vec4.
-   Returns the modified vector.")
+(:documentation "Set Z component of vec3 vec4.
+Returns the modified vector.")
   ;; Float.
   (:method ((vec vec3) (new-value float))
            (setf (vec3-z vec) new-value)
@@ -215,8 +240,8 @@
            vec))
 
 (defgeneric set-w (vec new-value)
-  (:documentation "Set W component of vec3 vec4.
-   Returns the modified vector.")
+(:documentation "Set W component of vec3 vec4.
+Returns the modified vector.")
   ;; Float.
   (:method ((vec vec4) (new-value float))
            (setf (vec4-w vec) new-value)
@@ -230,9 +255,9 @@
 ;; Useful for messing with REPL or maybe you want to do something special?
 
 (defgeneric set-vec2 (vec x y)
-  (:documentation "Set the values of a vec2.
-   \"vec\" is mutated during this procedure!
-   Chainable.")
+(:documentation "Set the values of a vec2.
+\"vec\" is mutated during this procedure!
+Chainable.")
   (:method ((vec vec2) (x float) (y float))
            (set-x vec x)
            (set-y vec y)
@@ -243,9 +268,9 @@
            vec))
 
 (defgeneric set-vec3 (vec x y z)
-  (:documentation "Set the values of a vec3.
-   \"vec\" is mutated during this procedure!
-   Chainable.")
+(:documentation "Set the values of a vec3.
+\"vec\" is mutated during this procedure!
+Chainable.")
   (:method ((vec vec3) (x float) (y float) (z float))
            (set-x vec x)
            (set-y vec y)
@@ -257,10 +282,10 @@
            (set-z vec (float z))
            vec))
 
-(defgeneric set-vec4 (vec x y z)
-  (:documentation "Set the values of a vec4.
-   \"vec\" is mutated during this procedure!
-   Chainable.")
+(defgeneric set-vec4 (vec x y z w)
+(:documentation "Set the values of a vec4.
+\"vec\" is mutated during this procedure!
+Chainable.")
   (:method ((vec vec4) (x float) (y float) (z float) (w float))
            (set-x vec x)
            (set-y vec y)
@@ -280,9 +305,9 @@
 ;; Vec is explicitly returned for readability.
 
 (defgeneric add (vec other)
-  (:documentation "Add a vector to other vector of same type or a number.
-   \"vec\" is mutated during this procedure!
-   Chainable.")
+(:documentation "Add a vector to other vector of same type or a number.
+\"vec\" is mutated during this procedure!
+Chainable.")
   ;; Vec + Vec.
   (:method ((vec vec2) (other vec2))
            (set-x vec (+ (get-x vec) (get-x other)))
@@ -333,9 +358,9 @@
            vec))
 
 (defgeneric sub (vec other)
-  (:documentation "Subtract a vector to other vector of same type or a number.
-   \"vec\" is mutated during this procedure!
-   Chainable.")
+(:documentation "Subtract a vector to other vector of same type or a number.
+\"vec\" is mutated during this procedure!
+Chainable.")
   ;; Vec - Vec.
   (:method ((vec vec2) (other vec2))
            (set-x vec (- (get-x vec) (get-x other)))
@@ -386,9 +411,9 @@
            vec))
 
 (defgeneric mul (vec other)
-  (:documentation "Multiply a vector to other vector of same type or a number.
-   \"vec\" is mutated during this procedure!
-   Chainable.")
+(:documentation "Multiply a vector to other vector of same type or a number.
+\"vec\" is mutated during this procedure!
+Chainable.")
   ;; Vec * Vec.
   (:method ((vec vec2) (other vec2))
            (set-x vec (* (get-x vec) (get-x other)))
@@ -439,9 +464,9 @@
            vec))
 
 (defgeneric div (vec other)
-  (:documentation "Divide a vector to other vector of same type or a number.
-   \"vec\" is mutated during this procedure!
-   Chainable.")
+(:documentation "Divide a vector to other vector of same type or a number.
+\"vec\" is mutated during this procedure!
+Chainable.")
   ;; Vec / Vec.
   (:method ((vec vec2) (other vec2))
            (set-x vec (/ (get-x vec) (get-x other)))
@@ -490,6 +515,119 @@
            (set-z vec (/ (get-z vec) (float other)))
            (set-w vec (/ (get-w vec) (float other)))
            vec))
+
+;;* Mutable type specific generic operations.
+;;* Unfortunately, due to mixed typing, I have to make these functions.
+;;* There's probably a better way to do this part though.
+
+(defun vec2-add (vec x y)
+"Add a numeric x y value to a vec2.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (+ (get-x vec) (float x)))
+  (set-y vec (+ (get-y vec) (float y)))
+  vec)
+
+(defun vec3-add (vec x y z)
+"Add a numeric x y z value to a vec3.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (+ (get-x vec) (float x)))
+  (set-y vec (+ (get-y vec) (float y)))
+  (set-z vec (+ (get-z vec) (float z)))
+  vec)
+
+(defun vec4-add (vec x y z w)
+"Add a numeric x y z w value to a vec4.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (+ (get-x vec) (float x)))
+  (set-y vec (+ (get-y vec) (float y)))
+  (set-z vec (+ (get-z vec) (float z)))
+  (set-w vec (+ (get-w vec) (float w)))
+  vec)
+
+(defun vec2-sub (vec x y)
+"Subtract a numeric x y value from a vec2.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (- (get-x vec) (float x)))
+  (set-y vec (- (get-y vec) (float y)))
+  vec)
+
+(defun vec3-sub (vec x y z)
+"Subtract a numeric x y z value from a vec3.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (- (get-x vec) (float x)))
+  (set-y vec (- (get-y vec) (float y)))
+  (set-z vec (- (get-z vec) (float z)))
+  vec)
+
+(defun vec4-sub (vec x y z w)
+"Subtract a numeric x y z w value from a vec4.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (- (get-x vec) (float x)))
+  (set-y vec (- (get-y vec) (float y)))
+  (set-z vec (- (get-z vec) (float z)))
+  (set-w vec (- (get-w vec) (float w)))
+  vec)
+
+(defun vec2-mul (vec x y)
+"Multiply a vec2 by a numeric x y value.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (* (get-x vec) (float x)))
+  (set-y vec (* (get-y vec) (float y)))
+  vec)
+
+(defun vec3-mul (vec x y z)
+"Multiply a vec3 by a numeric x y z value.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (* (get-x vec) (float x)))
+  (set-y vec (* (get-y vec) (float y)))
+  (set-z vec (* (get-z vec) (float z)))
+  vec)
+
+(defun vec4-mul (vec x y z w)
+"Multiply a vec4 by a numeric x y z w value.
+\"vec\" is mutated during this procedure!
+Chainable."  
+  (set-x vec (* (get-x vec) (float x)))
+  (set-y vec (* (get-y vec) (float y)))
+  (set-z vec (* (get-z vec) (float z)))
+  (set-w vec (* (get-w vec) (float w)))
+  vec)
+
+(defun vec2-div (vec x y)
+"Divide a vec2 by a numeric x y value.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (/ (get-x vec) (float x)))
+  (set-y vec (/ (get-y vec) (float y)))
+  vec)
+
+(defun vec3-div (vec x y z)
+"Divide a vec3 by a numeric x y z value.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (/ (get-x vec) (float x)))
+  (set-y vec (/ (get-y vec) (float y)))
+  (set-z vec (/ (get-z vec) (float z)))
+  vec)
+
+(defun vec4-div (vec x y z w)
+"Divide a vec3 by a numeric x y z w value.
+\"vec\" is mutated during this procedure!
+Chainable."
+  (set-x vec (/ (get-x vec) (float x)))
+  (set-y vec (/ (get-y vec) (float y)))
+  (set-z vec (/ (get-z vec) (float z)))
+  (set-w vec (/ (get-w vec) (float w)))
+  vec)
+
 
 ;;! Immutable operations.
 
@@ -698,9 +836,17 @@
              (/ (get-z vec) (float other))
              (/ (get-w vec) (float other)))))
 
+;;* Immutable type specific generic operations.
+;;* Unfortunately, due to mixed typing, I have to make these functions.
+;;* There's probably a better way to do this part though.
+
+(defun vec2-add-new (vec x y)
+  (new-vec 
+    (+ (get-x vec) (float x))
+    (+ (get-y vec) (float y))))
+
 (defgeneric inv (vec)
   (:documentation "Inverts a vector.")
   (:method ((vec vec2)) (mul vec -1) vec)
   (:method ((vec vec3)) (mul vec -1) vec)
   (:method ((vec vec4)) (mul vec -1) vec))
-
