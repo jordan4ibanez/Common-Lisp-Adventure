@@ -59,8 +59,14 @@
           vec3-add-new
           vec4-add-new
           vec2-sub-new
-          vec3-add-new
-          vec4-add-new
+          vec3-sub-new
+          vec4-sub-new
+          vec2-mul-new
+          vec3-mul-new
+          vec4-mul-new
+          vec2-div-new
+          vec3-div-new
+          vec4-div-new
           inv))
 
 ;; Base structures. Data containers, do not need OOP flexibility.
@@ -619,7 +625,7 @@ Chainable."
   vec)
 
 (defun vec4-div (vec x y z w)
-"Divide a vec3 by a numeric x y z w value.
+"Divide a vec4 by a numeric x y z w value.
 \"vec\" is mutated during this procedure!
 Chainable."
   (set-x vec (/ (get-x vec) (float x)))
@@ -841,9 +847,100 @@ Chainable."
 ;;* There's probably a better way to do this part though.
 
 (defun vec2-add-new (vec x y)
+"Add a vec2 by a numeric x y value.
+Returns a new vec2"
   (new-vec 
     (+ (get-x vec) (float x))
     (+ (get-y vec) (float y))))
+
+(defun vec3-add-new (vec x y z)
+"Add a vec3 by a numeric x y z value.
+Returns a new vec3"
+  (new-vec 
+    (+ (get-x vec) (float x))
+    (+ (get-y vec) (float y))
+    (+ (get-z vec) (float z))))
+
+(defun vec4-add-new (vec x y z w)
+"Add a vec4 by a numeric x y z w value.
+Returns a new vec4"
+  (new-vec 
+    (+ (get-x vec) (float x))
+    (+ (get-y vec) (float y))
+    (+ (get-z vec) (float z))
+    (+ (get-w vec) (float w))))
+
+(defun vec2-sub-new (vec x y)
+"Subtract a numeric x y value from a vec2.
+Returns a new vec2"
+  (new-vec 
+    (- (get-x vec) (float x))
+    (- (get-y vec) (float y))))
+
+(defun vec3-sub-new (vec x y z)
+"Subtract a numeric x y z value from a vec2.
+Returns a new vec3"
+  (new-vec 
+    (- (get-x vec) (float x))
+    (- (get-y vec) (float y))
+    (- (get-z vec) (float z))))
+
+(defun vec4-sub-new (vec x y z w)
+"Subtract a numeric x y z w value from a vec2.
+Returns a new vec4"
+  (new-vec 
+    (- (get-x vec) (float x))
+    (- (get-y vec) (float y))
+    (- (get-z vec) (float z))
+    (- (get-w vec) (float w))))
+
+(defun vec2-mul-new (vec x y)
+"Multiply a vec2 by a numeric x y value.
+Returns a new vec2"
+  (new-vec 
+    (* (get-x vec) (float x))
+    (* (get-y vec) (float y))))
+
+(defun vec3-mul-new (vec x y z)
+"Multiply a vec3 by a numeric x y z value.
+Returns a new vec3"
+  (new-vec 
+    (* (get-x vec) (float x))
+    (* (get-y vec) (float y))
+    (* (get-z vec) (float z))))
+
+(defun vec4-mul-new (vec x y z w)
+"Multiply a vec4 by a numeric x y z w value.
+Returns a new vec4"
+  (new-vec 
+    (* (get-x vec) (float x))
+    (* (get-y vec) (float y))
+    (* (get-z vec) (float z))
+    (* (get-w vec) (float w))))
+
+(defun vec2-div-new (vec x y)
+"Divide a vec2 by a numeric x y value.
+Returns a new vec2"
+  (new-vec 
+    (/ (get-x vec) (float x))
+    (/ (get-y vec) (float y))))
+
+(defun vec3-div-new (vec x y z)
+"Divide a vec3 by a numeric x y z value.
+Returns a new vec3"
+  (new-vec 
+    (/ (get-x vec) (float x))
+    (/ (get-y vec) (float y))
+    (/ (get-z vec) (float z))))
+
+(defun vec4-div-new (vec x y z w)
+"Divide a vec4 by a numeric x y z w value.
+Returns a new vec4"
+  (new-vec 
+    (/ (get-x vec) (float x))
+    (/ (get-y vec) (float y))
+    (/ (get-z vec) (float z))
+    (/ (get-w vec) (float w))))
 
 (defgeneric inv (vec)
   (:documentation "Inverts a vector.")
