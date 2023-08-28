@@ -10,7 +10,7 @@
 
 (defpackage #:vector
   (:nicknames :vec)
-  (:use :cl :game-math :matrix))
+  (:use :cl :game-math))
 
 (in-package :vector)
 
