@@ -70,7 +70,7 @@
         ((eql (type-of vec) 'vec3) (list (get-x vec) (get-y vec) (get-z vec)))
         ((eql (type-of vec) 'vec4) (list (get-x vec) (get-y vec) (get-z vec) (get-w vec)))))
 
-;; Pass it 'vec2 'vec3 or 'vec4 and you get 2 3 or 4
+;; Pass it 'vec2 'vec3 or 'vec4 and you get 2 3 or 4.
 (defun vec-type-component-amount (vec-type)
   (cond ((eql vec-type 'vec2) 2)
         ((eql vec-type 'vec3) 3)
