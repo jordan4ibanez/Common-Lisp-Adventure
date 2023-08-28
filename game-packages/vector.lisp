@@ -16,6 +16,8 @@
           vec2
           vec3
           vec4
+          blank-vec
+          clone-vec
           new-vec
           new-vec-from-list
           new-list-from-vec
@@ -57,6 +59,20 @@
   (cond ((not (null w)) (make-vec4 :x (float x) :y (float y) :z (float z) :w (float w)))
         ((not (null z)) (make-vec3 :x (float x) :y (float y) :z (float z)))
         (t              (make-vec2 :x (float x) :y (float y)))))
+
+(defgeneric blank-vec (size)
+  (:documentation "Create a new vec initialized to 0.0 for all components.")
+  (:method ((size integer))
+           (cond ((eq size 2) (make-vec2 :x 0.0 :y 0.0))
+                 ((eq size 3) (make-vec3 :x 0.0 :y 0.0 :z 0.0))
+                 ((eq size 4) (make-vec4 :x 0.0 :y 0.0 :z 0.0 :w 0.0)))))
+
+;; Simple vec cloning utility.
+(defgeneric clone-vec (vec)
+  (:documentation "Clone a vector.")
+  (:method ((vec vec2)) (new-vec (get-x vec) (get-y vec)))
+  (:method ((vec vec3)) (new-vec (get-x vec) (get-y vec) (get-z vec)))
+  (:method ((vec vec4)) (new-vec (get-x vec) (get-y vec) (get-z vec) (get-w vec))))
 
 ;; Constructor with auto dispatch for lists. Just dumps integers into floating point.
 (defun new-vec-from-list (input-list)
