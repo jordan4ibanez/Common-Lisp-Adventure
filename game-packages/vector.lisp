@@ -204,6 +204,54 @@
            (setf (vec4-w vec) (float new-value))
            vec))
 
+;;! Specialty setters
+;; Useful for messing with REPL or maybe you want to do something special?
+
+(defgeneric set-vec2 (vec x y)
+  (:documentation "Set the values of a vec2.
+   \"vec\" is mutated during this procedure!
+   Chainable.")
+  (:method ((vec vec2) (x float) (y float))
+           (set-x vec x)
+           (set-y vec y)
+           vec)
+  (:method ((vec vec2) (x integer) (y integer))
+           (set-x vec (float x))
+           (set-y vec (float y))
+           vec))
+
+(defgeneric set-vec3 (vec x y z)
+  (:documentation "Set the values of a vec3.
+   \"vec\" is mutated during this procedure!
+   Chainable.")
+  (:method ((vec vec3) (x float) (y float) (z float))
+           (set-x vec x)
+           (set-y vec y)
+           (set-z vec z)
+           vec)
+  (:method ((vec vec2) (x integer) (y integer) (z integer))
+           (set-x vec (float x))
+           (set-y vec (float y))
+           (set-z vec (float z))
+           vec))
+
+(defgeneric set-vec4 (vec x y z)
+  (:documentation "Set the values of a vec4.
+   \"vec\" is mutated during this procedure!
+   Chainable.")
+  (:method ((vec vec4) (x float) (y float) (z float) (w float))
+           (set-x vec x)
+           (set-y vec y)
+           (set-z vec z)
+           (set-w vec w)
+           vec)
+  (:method ((vec vec2) (x integer) (y integer) (z integer) (w integer))
+           (set-x vec (float x))
+           (set-y vec (float y))
+           (set-z vec (float z))
+           (set-w vec (float w))
+           vec))
+
 ;;! Mutable operations.
 ;; Note: All mutable methods return input to allow chaining.
 ;; I think I've seen this before, hmm.
