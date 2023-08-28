@@ -614,10 +614,7 @@
 
 (defgeneric inv (vec)
   (:documentation "Inverts a vector.")
-  ;;! FIXME: NEEDS TO JUST USE THE NEW MUTABLE API!
-  (:method ((vec vec2))
-           (setf (vec2-x vec) (* (get-x vec) -1))
-           (setf (vec2-y vec) (* (get-y vec) -1)))
-  (:method ((vec vec3)) (setq vec (mul vec -1.0)))
-  (:method ((vec vec4)) (setq vec (mul vec -1.0))))
+  (:method ((vec vec2)) (mul vec -1) vec)
+  (:method ((vec vec3)) (mul vec -1) vec)
+  (:method ((vec vec4)) (mul vec -1) vec))
 
