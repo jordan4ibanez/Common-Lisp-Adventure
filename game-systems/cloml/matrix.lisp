@@ -1,7 +1,3 @@
-; (defpackage #:matrix
-;   (:nicknames :mat)
-;   (:use :cl :game-math :vector))
-
 (in-package :cloml)
 
 ;; This is quite the monster list here.

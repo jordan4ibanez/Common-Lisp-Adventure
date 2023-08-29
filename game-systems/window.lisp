@@ -1,5 +1,5 @@
 (defpackage #:window
-  (:use :cl :cl-glfw3 :cl-opengl :vector))
+  (:use :cl :cl-glfw3 :cl-opengl :cloml))
 
 (in-package :window)
 

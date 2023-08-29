@@ -1,6 +1,6 @@
 (defpackage #:internal-opengl
   (:nicknames :igl)
-  (:use :cl :cl-glfw3 :cl-opengl :uiop))
+  (:use :cl :cl-glfw3 :cl-opengl))
 
 (in-package :internal-opengl)
 
