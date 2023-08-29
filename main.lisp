@@ -1,5 +1,5 @@
 ;; Auto load all this when compiling.
-(eval-when (:compile-toplevel)
+(eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :cl-glfw3)
   (use-package :cl-glfw3)
   (ql:quickload :cl-opengl)
@@ -7,7 +7,12 @@
   (ql:quickload :trivial-main-thread)
   (use-package :trivial-main-thread)
   ;; Load up super-load.
-  (load "super-load.lisp")
+  (ql:quickload :super-loader)
+  (use-package :super-loader))
+
+;; Now jump into another eval-when to enable usage of eval-when
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  ; (load "super-load.lisp")
   ;; Now step into local packages.
   (super-load "game-systems/cloml")
   (load "game-systems/delta-time.lisp")
@@ -57,5 +62,8 @@
 (defun run()
   (sb-int:with-float-traps-masked (:invalid)
     (main-loop)))
+
+;; Note to self:
+(loop for i from 0 to 100 do (print "REMEMBER TO CLONE SUPER-LOADER INTO LOCAL PACKAGES!"))
 
 (run)
