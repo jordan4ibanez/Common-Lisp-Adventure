@@ -8,11 +8,11 @@
 
 ;;TODO: Translate JOML.
 
-(defpackage #:vector
-  (:nicknames :vec)
-  (:use :cl :game-math :matrix))
+; (defpackage #:vector
+;   (:nicknames :vec)
+;   (:use :cl :game-math :matrix))
 
-(in-package :vector)
+(in-package :cloml)
 
 (export '(
           vec2

@@ -1,32 +1,29 @@
 ;; Auto load all this when compiling.
 (eval-when (:compile-toplevel)
-  ;; Load all remote systems/packages before we step into local.
   (ql:quickload :cl-glfw3)
   (use-package :cl-glfw3)
   (ql:quickload :cl-opengl)
   (use-package :cl-opengl)
   (ql:quickload :trivial-main-thread)
   (use-package :trivial-main-thread)
-   ;; Now step into local packages.
-  (load "game-packages/game-math.lisp")
-  (use-package :game-math)
-  (load "game-packages/delta-time.lisp")
+  ;; Load up super-load.
+  (load "super-load.lisp")
+  ;; Now step into local packages.
+  (super-load "cloml/cloml")
+  (load "game-systems/delta-time.lisp")
   (use-package :delta-time)
-  (load "game-packages/vector.lisp")
-  (use-package :vector)
-  (load "game-packages/matrix.lisp")
-  (use-package :matrix)
-  (load "game-packages/entity.lisp")
+  (load "game-systems/entity.lisp")
   (use-package :entity)
-  (load "game-packages/internal-opengl.lisp")
+  (load "game-systems/internal-opengl.lisp")
   (use-package :internal-opengl)
-  (load "game-packages/window.lisp")
+  (load "game-systems/window.lisp")
   (use-package :window))
+
+
 
 ;; Pushes a new item to the end of a list.
 (defun push-last(the-item the-listy)
   (push the-item (cdr (last the-listy))))
-
 ; (defvar cool-test (new-vec 3 3 3))
 
 ; (defvar cccc (new-vec-from-list (loop for x in (to-list cool-test) collect (* x 5.0))))
