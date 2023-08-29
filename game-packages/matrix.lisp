@@ -17,6 +17,8 @@
           ; set-m10 set-m11 set-m12 set-m13
           ; set-m20 set-m21 set-m22 set-m23
           ; set-m30 set-m31 set-m32 set-m33
+          
+
                   
           ))
 
@@ -25,7 +27,6 @@
 ;; This is so I don't end up breaking my fingers trying to type it all.
 ;; Also, some of this may look like "why the hell are you doing it like that?".
 ;; I'm translating it, dumbness may be changed later on.
-;; Also I'm translating this from java & D while crossreferencing it lmao.
 
 ;; 6 bits.
 (defconstant plane-nx 0)
@@ -55,9 +56,6 @@
 
 
 (defstruct mat4
-  ;; I never did figure out why mat4f has properties.
-  ;; Also this is 30.
-  (properties (logior (logior (logior property-orthonormal property-translation) property-affine) property-identity) :type integer)
   (m00 1.0 :type float)(m01 0.0 :type float)(m02 0.0 :type float)(m03 0.0 :type float)
   (m10 0.0 :type float)(m11 1.0 :type float)(m12 0.0 :type float)(m13 0.0 :type float)
   (m20 0.0 :type float)(m21 0.0 :type float)(m22 1.0 :type float)(m23 0.0 :type float)
@@ -74,7 +72,10 @@
 
 
 
+
+
 ;;Basic getters.
+
 (defun get-m00 (mat)
 "Get 0X0 in a mat4"
   (mat4-m00 mat))
