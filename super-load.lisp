@@ -1,7 +1,9 @@
 ;; Thanks to ICan'tThinkOfAGoodName in the Lisp Discord for helping out with making this work on Windows!
-(defpackage #:super-load
-  (:nicknames :loadenstein3d)
-  (:use :cl))
+; (defpackage #:super-loader
+;   (:nicknames :loadenstein3d)
+;   (:use :cl))
+
+; (in-package :super-loader)
 
 (export '(
           super-load 
@@ -33,5 +35,3 @@ Now system :my-cool-system has been loaded, packages contained inside of it are 
         (error (format nil "super-load, ERROR! System (~a) was not found in:~%~a~%(Did you make a typo?)" 
               (car (last (split-sequence:split-sequence #\/ old-relative-path)))
               (concatenate 'string (format nil "~a" (uiop:getcwd)) old-relative-path)))))))
-
-(use-package :super-load)
