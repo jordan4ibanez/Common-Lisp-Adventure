@@ -15,6 +15,7 @@
   ; (load "super-load.lisp")
   ;; Now step into local packages.
   (super-load "game-systems/cloml")
+  ;; Legacy learning things. DEFINITELY should be systems.
   (load "game-systems/delta-time.lisp")
   (use-package :delta-time)
   (load "game-systems/entity.lisp")
