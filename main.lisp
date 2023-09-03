@@ -24,7 +24,11 @@
   (load "game-systems/window.lisp")
   (use-package :window))
 
-
+;;TODO: this is my todo
+;;tt 1.) we gotta make a render api pipline
+;;tt 2.) implement shaders into the game
+;;tt 3.) render a triangle!
+;;tt 4.) make the triangle spin
 
 ;; Pushes a new item to the end of a list.
 (defun push-last(the-item the-listy)
