@@ -4,8 +4,7 @@
 
 (in-package :cloml)
 
-(export '(
-          fma
-          ))
+(export '(fma))
+
 (defun fma (x y z)
   (+ (* x y) z))
