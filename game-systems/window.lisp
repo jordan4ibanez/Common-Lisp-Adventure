@@ -3,11 +3,11 @@
 
 (in-package :window)
 
-(export '(
-          render
+(export '(render
           set-viewport
           quit-on-escape
-          update-viewport))
+          update-viewport
+          pass-through-update-viewport))
 
 (defvar *window-size* (new-vec 0 0))
 
@@ -18,7 +18,7 @@
     (set-window-should-close))
   (when (and (eq key :e) (eq action :press))
     (print "cool"))
-  (when t (print "hi")))
+  (when t (print (format *standard-output* "~a | ~a" key action))))
 
 (defun render ()
   (gl:clear :color-buffer)
@@ -27,21 +27,21 @@
     (gl:rect -25 -25 25 25)))
 
 (defun set-viewport (width height)
-  (gl:viewport 0 0 width height)
-  )
-  ; (gl:matrix-mode :projection)
-  ; (gl:load-identity)
-  ; (gl:ortho -50 50 -50 50 -1 1)
-  ; (gl:matrix-mode :modelview)
-  ; (gl:load-identity))
+  (gl:viewport 0 0 width height))
+; (gl:matrix-mode :projection)
+; (gl:load-identity)
+; (gl:ortho -50 50 -50 50 -1 1)
+; (gl:matrix-mode :modelview)
+; (gl:load-identity))
 
-
-;; (Code generator) You have to reload the game to make this re-initialize unfortunately.
-(def-window-size-callback update-viewport (window w h)
-  (declare (ignore window))
-  (pass-through-update-viewport w h))
 
 ;; So we shove it into a custom thing WOOOO!
 (defun pass-through-update-viewport(w h)
   (format t "window resized to ~a, ~a~%" w h)
   (set-viewport w h))
+;; ^
+;; |
+;; (Code generator) You have to reload the game to make this re-initialize unfortunately.
+(def-window-size-callback update-viewport (window w h)
+  (declare (ignore window))
+  (pass-through-update-viewport w h))
