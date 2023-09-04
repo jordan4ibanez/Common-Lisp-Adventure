@@ -2,22 +2,20 @@
 
 ;; This is quite the monster list here.
 
-(export '(
+(export '(new-mat4
           new-mat4-raw
           ;; This was organized like this so this file isn't a mile long.
-                                        ; get-m00 get-m01 get-m02 get-m03
-                                        ; get-m10 get-m11 get-m12 get-m13
-                                        ; get-m20 get-m21 get-m22 get-m23
-                                        ; get-m30 get-m31 get-m32 get-m33
+          get-m00 get-m01 get-m02 get-m03
+          get-m10 get-m11 get-m12 get-m13
+          get-m20 get-m21 get-m22 get-m23
+          get-m30 get-m31 get-m32 get-m33
 
-                                        ; set-m00 set-m01 set-m02 set-m03
-                                        ; set-m10 set-m11 set-m12 set-m13
-                                        ; set-m20 set-m21 set-m22 set-m23
-                                        ; set-m30 set-m31 set-m32 set-m33
-          
+          set-m00 set-m01 set-m02 set-m03
+          set-m10 set-m11 set-m12 set-m13
+          set-m20 set-m21 set-m22 set-m23
+          set-m30 set-m31 set-m32 set-m33
 
-          
-          ))
+          identity))
 
 ;; This is JOML mat4f translated (as best as I can.)
 ;; This package is going to use a lot of shorthand variable names.
@@ -45,21 +43,28 @@
 
 ;; Bitshifted constants.
 ;;TODO NOTE: 1 is (1 << 1) | -1 is (1 >> 1) in Dlang!
-(defconstant property-perspective (ash 1 0))
-(defconstant property-affine      (ash 1 1))
-(defconstant property-identity    (ash 1 2))
-(defconstant property-translation (ash 1 3))
-(defconstant property-orthonormal (ash 1 4))
+;; (defconstant property-perspective (ash 1 0))
+;; (defconstant property-affine      (ash 1 1))
+;; (defconstant property-identity    (ash 1 2))
+;; (defconstant property-translation (ash 1 3))
+;; (defconstant property-orthonormal (ash 1 4))
 
 
 
 (defstruct mat4
-  (m00 1.0 :type float)(m01 0.0 :type float)(m02 0.0 :type float)(m03 0.0 :type float)
-  (m10 0.0 :type float)(m11 1.0 :type float)(m12 0.0 :type float)(m13 0.0 :type float)
-  (m20 0.0 :type float)(m21 0.0 :type float)(m22 1.0 :type float)(m23 0.0 :type float)
-  (m30 0.0 :type float)(m31 0.0 :type float)(m32 0.0 :type float)(m33 1.0 :type float))
+           ;; (properties (logior (logior (logior property-orthonormal property-translation) property-affine) property-identity) :type integer)
+           (m00 1.0 :type float)(m01 0.0 :type float)(m02 0.0 :type float)(m03 0.0 :type float)
+           (m10 0.0 :type float)(m11 1.0 :type float)(m12 0.0 :type float)(m13 0.0 :type float)
+           (m20 0.0 :type float)(m21 0.0 :type float)(m22 1.0 :type float)(m23 0.0 :type float)
+           (m30 0.0 :type float)(m31 0.0 :type float)(m32 0.0 :type float)(m33 1.0 :type float))
 
 ;; m00 m01 m02 m03 m10 m11 m12 m13 m20 m21 m22 m23 m30 m31 m32 m33
+
+(defun new-mat4 ()
+  (new-mat4-raw 1 0 0 0
+                0 1 0 0
+                0 0 1 0
+                0 0 0 1))
 
 ;; I suppose this function is for when you really hate yourself.
 (defun new-mat4-raw (m00 m01 m02 m03 m10 m11 m12 m13 m20 m21 m22 m23 m30 m31 m32 m33)
@@ -67,10 +72,6 @@
              :m10 (float m10) :m11 (float m11) :m12 (float m12) :m13 (float m13)
              :m20 (float m20) :m21 (float m21) :m22 (float m22) :m23 (float m23)
              :m30 (float m30) :m31 (float m31) :m32 (float m32) :m33 (float m33)))
-
-
-
-
 
 ;;Basic getters.
 
@@ -188,4 +189,26 @@
 (defun set-m33 (mat v)
   "Set 3X3 in a mat4."
   (setf (mat4-m33 mat) (float v))
+  mat)
+
+(defun identity (mat)
+  (set-m00 mat 1.0)
+  (set-m01 mat 0.0)
+  (set-m02 mat 0.0)
+  (set-m03 mat 0.0)
+
+  (set-m10 mat 0.0)
+  (set-m11 mat 1.0)
+  (set-m12 mat 0.0)
+  (set-m13 mat 0.0)
+
+  (set-m20 mat 0.0)
+  (set-m21 mat 0.0)
+  (set-m22 mat 1.0)
+  (set-m23 mat 0.0)
+
+  (set-m30 mat 0.0)
+  (set-m31 mat 0.0)
+  (set-m32 mat 0.0)
+  (set-m33 mat 1.0)
   mat)
