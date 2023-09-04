@@ -15,9 +15,11 @@
           set-m20 set-m21 set-m22 set-m23
           set-m30 set-m31 set-m32 set-m33
 
+          set-mat4-raw
           mat4-identity
           set-mat4
-          clone-mat4))
+          clone-mat4
+          mat4-set-transposed))
 
 ;; This is JOML mat4f translated (as best as I can.)
 ;; This package is going to use a lot of shorthand variable names.
@@ -193,6 +195,28 @@
   (setf (mat4-m33 mat) (float v))
   mat)
 
+(defun set-mat4-raw (mat m00 m01 m02 m03 m10 m11 m12 m13 m20 m21 m22 m23 m30 m31 m32 m33)
+  (set-m00 mat m00)
+  (set-m01 mat m01)
+  (set-m02 mat m02)
+  (set-m03 mat m03)
+
+  (set-m10 mat m10)
+  (set-m11 mat m11)
+  (set-m12 mat m12)
+  (set-m13 mat m13)
+
+  (set-m20 mat m20)
+  (set-m21 mat m21)
+  (set-m22 mat m22)
+  (set-m23 mat m23)
+
+  (set-m30 mat m30)
+  (set-m31 mat m31)
+  (set-m32 mat m32)
+  (set-m33 mat m33)
+  mat)
+
 (defun mat4-identity (mat)
   (set-m00 mat 1.0)
   (set-m01 mat 0.0)
@@ -237,7 +261,7 @@
   (set-m33 mat (get-m33 other)))
 
 (defun clone-mat4 (mat)
-  (let ((clone-of-mat new-mat4))
+  (let ((clone-of-mat (new-mat4)))
     (set-m00 clone-of-mat (get-m00 mat))
     (set-m01 clone-of-mat (get-m01 mat))
     (set-m02 clone-of-mat (get-m02 mat))
@@ -256,4 +280,30 @@
     (set-m30 clone-of-mat (get-m30 mat))
     (set-m31 clone-of-mat (get-m31 mat))
     (set-m32 clone-of-mat (get-m32 mat))
-    (set-m33 clone-of-mat (get-m33 mat))))
+    (set-m33 clone-of-mat (get-m33 mat))
+    clone-of-mat))
+
+
+
+(defun mat4-set-transposed (mat)
+  (let ((nm10 (get-m01 mat)) (nm12 (get-m21 mat)) (nm13 (get-m31 mat))
+        (nm20 (get-m02 mat)) (nm21 (get-m12 mat)) (nm30 (get-m03 mat)) 
+        (nm31 (get-m13 mat)) (nm32 (get-m23 mat)))
+        
+    (set-mat4-raw mat (get-m00 mat) (get-m10 mat) (get-m20 mat) (get-m30 mat)
+                  nm10 (get-m11 mat) nm12 nm13
+                  nm20 nm21 (get-m22 mat) (get-m32 mat)
+                  nm30 nm31 nm32 (get-m33 mat))))
+
+(defun mat4-set-translation (mat vec)
+  (set-m30 mat (get-x vec))
+  (set-m31 mat (get-y vec))
+  (set-m32 mat (get-z vec)))
+
+;; This is gonna be a bit complicated
+(defun mat4-set-rotation (mat angle-x angle-y angle-z)
+  ;; Climb the tower
+  (let ((sin-x (sin angle-x))
+        (sin-y (sin angle-y))
+        (sin-z (sin angle-z)))
+    let (())))
