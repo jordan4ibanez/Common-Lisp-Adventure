@@ -15,7 +15,9 @@
           set-m20 set-m21 set-m22 set-m23
           set-m30 set-m31 set-m32 set-m33
 
-          identity))
+          mat4-identity
+          set-mat4
+          clone-mat4))
 
 ;; This is JOML mat4f translated (as best as I can.)
 ;; This package is going to use a lot of shorthand variable names.
@@ -191,12 +193,12 @@
   (setf (mat4-m33 mat) (float v))
   mat)
 
-(defun identity (mat)
+(defun mat4-identity (mat)
   (set-m00 mat 1.0)
   (set-m01 mat 0.0)
   (set-m02 mat 0.0)
   (set-m03 mat 0.0)
-
+  
   (set-m10 mat 0.0)
   (set-m11 mat 1.0)
   (set-m12 mat 0.0)
@@ -212,3 +214,46 @@
   (set-m32 mat 0.0)
   (set-m33 mat 1.0)
   mat)
+
+(defun set-mat4 (mat other)
+  (set-m00 mat (get-m00 other))
+  (set-m01 mat (get-m01 other))
+  (set-m02 mat (get-m02 other))
+  (set-m03 mat (get-m03 other))
+
+  (set-m10 mat (get-m10 other))
+  (set-m11 mat (get-m11 other))
+  (set-m12 mat (get-m12 other))
+  (set-m13 mat (get-m13 other))
+
+  (set-m20 mat (get-m20 other))
+  (set-m21 mat (get-m21 other))
+  (set-m22 mat (get-m22 other))
+  (set-m23 mat (get-m23 other))
+
+  (set-m30 mat (get-m30 other))
+  (set-m31 mat (get-m31 other))
+  (set-m32 mat (get-m32 other))
+  (set-m33 mat (get-m33 other)))
+
+(defun clone-mat4 (mat)
+  (let ((clone-of-mat new-mat4))
+    (set-m00 clone-of-mat (get-m00 mat))
+    (set-m01 clone-of-mat (get-m01 mat))
+    (set-m02 clone-of-mat (get-m02 mat))
+    (set-m03 clone-of-mat (get-m03 mat))
+    
+    (set-m10 clone-of-mat (get-m10 mat))
+    (set-m11 clone-of-mat (get-m11 mat))
+    (set-m12 clone-of-mat (get-m12 mat))
+    (set-m13 clone-of-mat (get-m13 mat))
+
+    (set-m20 clone-of-mat (get-m20 mat))
+    (set-m21 clone-of-mat (get-m21 mat))
+    (set-m22 clone-of-mat (get-m22 mat))
+    (set-m23 clone-of-mat (get-m23 mat))
+
+    (set-m30 clone-of-mat (get-m30 mat))
+    (set-m31 clone-of-mat (get-m31 mat))
+    (set-m32 clone-of-mat (get-m32 mat))
+    (set-m33 clone-of-mat (get-m33 mat))))
