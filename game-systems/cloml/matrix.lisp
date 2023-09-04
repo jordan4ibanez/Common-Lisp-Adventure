@@ -19,7 +19,10 @@
           mat4-identity
           set-mat4
           clone-mat4
-          mat4-set-transposed))
+          mat4-set-transposed
+          mat4-set-translation
+          mat4-set-rotation-raw
+          mat4-set-rotation))
 
 ;; This is JOML mat4f translated (as best as I can.)
 ;; This package is going to use a lot of shorthand variable names.
@@ -295,10 +298,14 @@
                   nm20 nm21 (get-m22 mat) (get-m32 mat)
                   nm30 nm31 nm32 (get-m33 mat))))
 
+
+(defun mat4-set-translation-raw (mat x y z)
+  (set-m30 mat x)
+  (set-m31 mat y)
+  (set-m32 mat z))
+
 (defun mat4-set-translation (mat vec)
-  (set-m30 mat (get-x vec))
-  (set-m31 mat (get-y vec))
-  (set-m32 mat (get-z vec)))
+  (mat4-set-translation-raw mat (get-x vec) (get-y vec) (get-z vec)))
 
 ;; This is gonna be a bit complicated
 (defun mat4-set-rotation-raw (mat angle-x angle-y angle-z)
