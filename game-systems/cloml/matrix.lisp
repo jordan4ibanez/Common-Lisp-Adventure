@@ -20,6 +20,7 @@
           set-mat4
           clone-mat4
           mat4-set-transposed
+          mat4-set-translation-raw
           mat4-set-translation
           mat4-set-rotation-raw
           mat4-set-rotation))
