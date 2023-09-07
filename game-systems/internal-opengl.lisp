@@ -1,6 +1,6 @@
 (defpackage #:internal-opengl
   (:nicknames :igl)
-  (:use :cl :cl-glfw3 :cl-opengl))
+  (:use :cl :cl-glfw3 :cl-opengl :str))
 
 (in-package :internal-opengl)
 
@@ -15,8 +15,8 @@
 
 (defvar *shaders* (make-hash-table))
 
-; (defclass Shader direct-superclasses direct-slots)
-; (error "~A does not exist" 'test)
+;; (defclass Shader direct-superclasses direct-slots)
+;; (error "~A does not exist" 'test)
 
 ;; (print *shaders*)
 
@@ -26,3 +26,8 @@
 ;; (loop for i from 1 to 10 do
 ;;       (format t "hi ~a~%" i))
 
+
+;; That was surprisingly easy
+(print
+ (str:from-file
+  (truename "shaders/frag.frag")))
