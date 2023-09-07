@@ -18,7 +18,11 @@
 ; (defclass Shader direct-superclasses direct-slots)
 ; (error "~A does not exist" 'test)
 
-(print *shaders*)
+;; (print *shaders*)
 
-(setf (gethash 'cool *shaders*) 23)
+;; (setf (gethash 'cool *shaders*) 23)
+
+
+;; (loop for i from 1 to 10 do
+;;       (format t "hi ~a~%" i))
 
