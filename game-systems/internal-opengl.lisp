@@ -73,4 +73,4 @@
                                                          :program-id program-id))))
 
 ;; FIXME: need to enable GLFW!
-(new-shader "main" "shaders/vertex.vert" "shaders/fragment.frag")
+(new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
