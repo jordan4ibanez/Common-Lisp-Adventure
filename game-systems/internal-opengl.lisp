@@ -31,3 +31,10 @@
 (print
  (str:from-file
   (truename "shaders/frag.frag")))
+
+;; GL shader
+;;note: for some reason this does not works
+;; (print gl:fragment-shader)
+
+;;note: So this is how we get access to frag shader type 
+;; (print 'fragment-shader)
