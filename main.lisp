@@ -6,6 +6,8 @@
   (use-package :cl-opengl)
   (ql:quickload :trivial-main-thread)
   (use-package :trivial-main-thread)
+  (ql:quickload :str)
+  (use-package :str)
   ;; Load up super-load.
   (ql:quickload :super-loader)
   (use-package :super-loader))
