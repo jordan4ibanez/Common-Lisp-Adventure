@@ -4,7 +4,7 @@
 
 (in-package :internal-opengl)
 
-(export '())
+(export '(new-shader))
 
 ;; This is one of my java packages translated to lisp, might be sloppy!
 
@@ -71,3 +71,6 @@
     (setf (gethash shader-name *shaders*) (make-instance 'shader
                                                          :name shader-name
                                                          :program-id program-id))))
+
+;; FIXME: need to enable GLFW!
+(new-shader "main" "shaders/vertex.vert" "shaders/fragment.frag")
