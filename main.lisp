@@ -40,7 +40,8 @@
 ;; Game update function.
 (defun game-update()
   (delta:calculate-delta-time)
-  (if (delta:fps-update) (glfw:set-window-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
+  (if (delta:fps-update)
+      (glfw:set-window-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
 
 ;; (print (new-vec-from-list (loop for x in (to-list (new-vec 1 2 3)) collect (* x 2))))
 
