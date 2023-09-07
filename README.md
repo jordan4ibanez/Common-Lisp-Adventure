@@ -3,6 +3,9 @@
 
 
 ```
+# Linux Mint required packages
+sudo apt install libglfw3-dev libffi-dev
+
 # openSUSE Tumbleweed required packages
 sudo zypper install libglfw3 libffi-devel
 ```
