@@ -4,11 +4,9 @@
 
 (in-package :internal-opengl)
 
-(export '(
-          ))
+(export '())
 
 ;; This is one of my java packages translated to lisp, might be sloppy!
-(defconstant current-dir (uiop:getcwd))
 
 (defstruct shader
   (name nil :type string)
