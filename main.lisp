@@ -8,6 +8,8 @@
   (use-package :trivial-main-thread)
   (ql:quickload :str)
   (use-package :str)
+  (ql:quickload :infix-math)
+  (use-package :infix-math)
   ;; Load up super-load.
   (ql:quickload :super-loader)
   (use-package :super-loader))
