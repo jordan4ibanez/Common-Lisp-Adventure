@@ -4,21 +4,32 @@
 
 (in-package :internal-opengl)
 
-(export '(new-shader))
+(export '(game-new-shader
+          game-use-shader
+          game-get-shader
+          game-has-shader))
 
 ;; This is one of my java packages translated to lisp, might be sloppy!
 
 (defstruct shader
   (name nil :type string)
   (program-id -1 :type integer)
-  (uniforms (make-hash-table) :type hash-table))
+  (uniforms (make-hash-table :test 'equal) :type hash-table))
 
 ;; This is so make-shader still exists as longhand.
 (defun game-make-shader (name program-id)
   "Optional constructor bolt on function for shaders."
   (make-shader :name name :program-id program-id))
 
-(defvar *shaders* (make-hash-table))
+(defvar *shaders* (make-hash-table :test 'equal))
+
+(defun game-get-shader (shader-name)
+  (gethash shader-name *shaders*))
+
+(defun game-has-shader (shader-name)
+  (if (game-get-shader shader-name)
+      t
+      nil))
 
 ;; (defclass Shader direct-superclasses direct-slots)
 ;; (error "~A does not exist" 'test)
@@ -33,9 +44,9 @@
 
 
 ;; That was surprisingly easy
-(print
- (str:from-file
-  (truename "shaders/frag.frag")))
+;; (print
+;;  (str:from-file
+;;   (truename "shaders/frag.frag")))
 
 ;; GL shader
 ;;note: for some reason this does not works
@@ -49,7 +60,7 @@
   (str:from-file (truename location)))
 
 ;; So this is the constructor function for creating a new shader
-(defun new-shader (shader-name vert-source-code-location frag-source-code-location)
+(defun game-new-shader (shader-name vert-source-code-location frag-source-code-location)
   (let ((vert
           (gl:create-shader :vertex-shader))
         (vert-code
@@ -75,7 +86,24 @@
     ;; And if we didn't get an error, create an object from the shader and store it for further use!
     (setf (gethash shader-name *shaders*)
           ;; (make-instance 'shader :name shader-name :program-id program-id)
-          (game-make-shader shader-name program-id)
-          )))
+          (game-make-shader shader-name program-id))
+    (format t "New shader (~a) created!~%" shader-name)))
 
-;; FIXME: need to enable GLFW!
+
+;; (format t "~a~%" (gethash "main" *shaders*))
+
+;; (if (gethash "main" *shaders*)
+;;     "Key exists"
+;;     "Key does not exist")
+
+;; (defun print-hash-entry (key value)
+;;     (format t "The value associated with the key ~S is ~S~%" key value))
+
+;; (maphash #'print-hash-entry *shaders*)
+
+(defun game-use-shader (shader-name)
+  (if (game-has-shader shader-name)
+      (progn
+        (gl:use-program (shader-program-id (game-get-shader shader-name)))
+        (format t "Using shader (~a)" shader-name))
+      (format t "ERROR: Tried to use non-existent shader! (~a) does not exist!" shader-name)))
