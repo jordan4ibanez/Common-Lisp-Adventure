@@ -39,7 +39,14 @@
   (push the-item (cdr (last the-listy))))
 ;; (defvar cool-test (new-vec 3 3 3))
 
-;; (defvar cccc (new-vec-from-list (loop for x in (to-list cool-test) collect (* x 5.0))))
+(defun game-initialize ()
+  (setf %gl:*gl-get-proc-address* #'get-proc-address)
+  (set-key-callback 'window:quit-on-escape)
+  (set-window-size-callback 'update-viewport)
+  (gl:clear-color 0 0 0 0)
+  (set-viewport 600 400)
+  ;; (igl:new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
+  (print "Hello, yes I am initialized"))
 
 ;; Game update function.
 (defun game-update()
@@ -60,11 +67,7 @@
   ;; Graphics calls on OS X must occur in the main thread
   (with-body-in-main-thread ()
     (with-init-window (:title "Window test" :width 600 :height 400)
-      (setf %gl:*gl-get-proc-address* #'get-proc-address)
-      (set-key-callback 'window:quit-on-escape)
-      (set-window-size-callback 'update-viewport)
-      (gl:clear-color 0 0 0 0)
-      (set-viewport 600 400)
+      (game-initialize)
       (loop until (window-should-close-p)
             do (game-tick-procedure)))))
 
