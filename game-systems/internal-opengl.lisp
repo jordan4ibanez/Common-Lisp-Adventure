@@ -21,6 +21,7 @@
   "Optional constructor bolt on function for shaders."
   (make-shader :name name :program-id program-id))
 
+;; Holds all the shaders
 (defvar *shaders* (make-hash-table :test 'equal))
 
 (defun game-get-shader (shader-name)
