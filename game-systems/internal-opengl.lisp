@@ -13,6 +13,11 @@
   (program-id -1 :type integer)
   (uniforms (make-hash-table) :type hash-table))
 
+;; This is so make-shader still exists as longhand.
+(defun game-make-shader (name program-id)
+  "Optional constructor bolt on function for shaders."
+  (make-shader :name name :program-id program-id))
+
 (defvar *shaders* (make-hash-table))
 
 ;; (defclass Shader direct-superclasses direct-slots)
@@ -43,7 +48,7 @@
 (defun shader-location-to-string (location)
   (str:from-file (truename location)))
 
-;; So this is the constructor function for creating a new shader
+So this is the constructor function for creating a new shader
 (defun new-shader (shader-name vert-source-code-location frag-source-code-location)
   (let ((vert
           (gl:create-shader :vertex-shader))
@@ -68,9 +73,9 @@
     ;; Now link the program
     (gl:link-program program-id)
     ;; And if we didn't get an error, create an object from the shader and store it for further use!
-    (setf (gethash shader-name *shaders*) (make-instance 'shader
-                                                         :name shader-name
-                                                         :program-id program-id))))
+    (setf (gethash shader-name *shaders*)
+          ;; (make-instance 'shader :name shader-name :program-id program-id)
+          (game-make-shader shader-name program-id)
+          )))
 
 ;; FIXME: need to enable GLFW!
-(new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
