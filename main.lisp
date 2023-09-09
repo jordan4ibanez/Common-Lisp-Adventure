@@ -45,8 +45,9 @@
   (set-window-size-callback 'update-viewport)
   (gl:clear-color 0 0 0 0)
   (set-viewport 600 400)
-  ;; (igl:new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
-  (print "Hello, yes I am initialized"))
+  (igl:game-new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
+  (igl:game-use-shader "main")
+  (print "Hello, yes I am initialized!~%"))
 
 ;; Game update function.
 (defun game-update()
