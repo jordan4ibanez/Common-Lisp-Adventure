@@ -48,7 +48,7 @@
 (defun shader-location-to-string (location)
   (str:from-file (truename location)))
 
-So this is the constructor function for creating a new shader
+;; So this is the constructor function for creating a new shader
 (defun new-shader (shader-name vert-source-code-location frag-source-code-location)
   (let ((vert
           (gl:create-shader :vertex-shader))
