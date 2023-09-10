@@ -45,7 +45,7 @@
   (set-window-size-callback 'update-viewport)
   ;; (gl:clear-color 0 0 0 0)
   (set-viewport 600 400)
-  ;;WARNING: If you disable shaders, this will just crash for no reason
+  ;; Every time the REPL reloads this, it creates a new shader in the C context
   (igl:game-new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
   (igl:game-new-shader-uniform "main" "cameraMatrix")
   (igl:game-use-shader "main")
@@ -59,6 +59,7 @@
 (defvar enable-flashing-debug t)
 ;;WARNING: This crashes if you don't wait exactly one game cycle.
 ;;TODO: Figure out why?
+;;note: Now it's not doing it anymore, is it a driver issue or what?
 ;; (defvar waited-one-frame t)
 (defun game-update()
   (delta:calculate-delta-time)
@@ -80,7 +81,6 @@
                     (setf up t)))))
         ;; (print scalar-thing)
         (window:set-clear-color-scalar scalar-thing)))
-  (setf waited-one-frame t)
   (if (delta:fps-update)
       (window:set-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
 
