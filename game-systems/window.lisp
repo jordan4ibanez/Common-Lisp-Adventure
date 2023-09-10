@@ -7,9 +7,15 @@
           set-viewport
           quit-on-escape
           update-viewport
-          pass-through-update-viewport))
+          pass-through-update-viewport
+          set-title
+          set-clear-color-scalar
+          set-clear-color
+          *clear-color*))
 
 (defvar *window-size* (new-vec 0 0))
+
+(defvar *clear-color* (new-vec 0 0 0 1))
 
 ;; You have to reload the game to make this re-initialize unfortunately.
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
@@ -21,18 +27,28 @@
   (when t (print (format *standard-output* "~a | ~a" key action))))
 
 (defun render ()
+  (gl:clear-color (get-x *clear-color*) (get-y *clear-color*) (get-z *clear-color*) (get-w *clear-color*))
   (gl:clear :color-buffer)
   (gl:with-pushed-matrix
-    (gl:color 0.1 0.1 0.1)
+    ;; (gl:color 0.1 0.1 0.1)
     (gl:rect -25 -25 25 25)))
+
+(defun set-title (new-title)
+  (glfw:set-window-title new-title))
 
 (defun set-viewport (width height)
   (gl:viewport 0 0 width height))
-; (gl:matrix-mode :projection)
-; (gl:load-identity)
-; (gl:ortho -50 50 -50 50 -1 1)
-; (gl:matrix-mode :modelview)
-; (gl:load-identity))
+  ;; (gl:matrix-mode :projection)
+  ;; (gl:load-identity)
+  ;; (gl:ortho -50 50 -50 50 -1 1)
+  ;; (gl:matrix-mode :modelview)
+  ;; (gl:load-identity))
+
+(defun set-clear-color-scalar (scalar)
+  (setf *clear-color* (new-vec scalar scalar scalar 1.0)))
+
+(defun set-clear-color (r g b)
+  (setf *clear-color* (new-vec r g b 1.0)))
 
 
 ;; So we shove it into a custom thing WOOOO!
