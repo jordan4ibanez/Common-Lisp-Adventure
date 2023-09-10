@@ -43,8 +43,9 @@
   (setf %gl:*gl-get-proc-address* #'get-proc-address)
   (set-key-callback 'window:quit-on-escape)
   (set-window-size-callback 'update-viewport)
-  (gl:clear-color 0 0 0 0)
+  ;; (gl:clear-color 0 0 0 0)
   (set-viewport 600 400)
+  ;;WARNING: If you disable shaders, this will just crash for no reason
   (igl:game-new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
   (igl:game-new-shader-uniform "main" "cameraMatrix")
   (igl:game-use-shader "main")
@@ -55,28 +56,33 @@
 (defvar scalar-thing 0.0)
 (defvar scalar-multiplier 0.25)
 (defvar up t)
-(defvar enable-flashing-debug nil)
+(defvar enable-flashing-debug t)
+;;WARNING: This crashes if you don't wait exactly one game cycle.
+;;TODO: Figure out why?
+(defvar waited-one-frame F)
 
 (defun game-update()
   (delta:calculate-delta-time)
-  (if enable-flashing-debug
-      (let ((dtime (* (delta:get-delta) scalar-multiplier)))
-        (if up
-            
-            (progn
-              (setf scalar-thing (+ scalar-thing dtime))
-              (if (>= scalar-thing 1.0)
-                  (progn
-                    (setf scalar-thing 1.0)
-                    (setf up nil))))
+  (if waited-one-frame
+      (if enable-flashing-debug
+          (let ((dtime (* (delta:get-delta) scalar-multiplier)))
+            (if up
+                (progn
+                  (setf scalar-thing (+ scalar-thing dtime))
+                  (if (>= scalar-thing 1.0)
+                      (progn
+                        (setf scalar-thing 1.0)
+                        (setf up nil))))
 
-            (progn
-              (setf scalar-thing (- scalar-thing dtime))
-              (if (<= scalar-thing 0.0)
-                  (progn
-                    (setf scalar-thing 0.0)
-                    (setf up t)))))
-        (window:set-clear-color-scalar scalar-thing)))
+                (progn
+                  (setf scalar-thing (- scalar-thing dtime))
+                  (if (<= scalar-thing 0.0)
+                      (progn
+                        (setf scalar-thing 0.0)
+                        (setf up t)))))
+            ;; (print scalar-thing)
+            (window:set-clear-color-scalar scalar-thing)))
+      (setf waited-one-frame t))
   (if (delta:fps-update)
       (window:set-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
 

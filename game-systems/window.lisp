@@ -10,12 +10,12 @@
           pass-through-update-viewport
           set-title
           set-clear-color-scalar
-          set-clear-color
-          *clear-color*))
+          set-clear-color))
 
 (defvar *window-size* (new-vec 0 0))
 
 (defvar *clear-color* (new-vec 0 0 0 1))
+
 
 ;; You have to reload the game to make this re-initialize unfortunately.
 (def-key-callback quit-on-escape (window key scancode action mod-keys)
@@ -28,14 +28,19 @@
     (print (format *standard-output* "~a | ~a" key action))))
 
 (defun render ()
-  (gl:clear-color (get-x *clear-color*) (get-y *clear-color*) (get-z *clear-color*) (get-w *clear-color*))
+  (if *clear-color*
+      (progn 
+        (gl:clear-color (get-x *clear-color*) (get-y *clear-color*) (get-z *clear-color*) (get-w *clear-color*))
+        )
+      (print "ERROR!!! CLEAR COLOR DOES NOT EXIST!"))
+  ;; (print *clear-color*)
   (gl:clear :color-buffer)
 ;;note: This is just a debugging test, I don't recommend raw pushing matrices to your gl program lmao.
   
-  )
-  ;; (gl:with-pushed-matrix
+  
+  (gl:with-pushed-matrix
     ;; (gl:color 0.1 0.1 0.1)
-    ;; (gl:rect -25 -25 25 25)))
+    (gl:rect -25 -25 25 25)))
 
 (defun set-title (new-title)
   (glfw:set-window-title new-title))
