@@ -28,10 +28,10 @@
 
 (defun render ()
   (gl:clear-color (get-x *clear-color*) (get-y *clear-color*) (get-z *clear-color*) (get-w *clear-color*))
-  (gl:clear :color-buffer)
-  (gl:with-pushed-matrix
+  (gl:clear :color-buffer))
+  ;; (gl:with-pushed-matrix
     ;; (gl:color 0.1 0.1 0.1)
-    (gl:rect -25 -25 25 25)))
+    ;; (gl:rect -25 -25 25 25)))
 
 (defun set-title (new-title)
   (glfw:set-window-title new-title))
