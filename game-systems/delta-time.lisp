@@ -4,8 +4,7 @@
 
 (in-package :delta-time)
 
-(export '(
-          get-delta
+(export '(get-delta
           get-fps
           fps-update
           calculate-delta-time))
