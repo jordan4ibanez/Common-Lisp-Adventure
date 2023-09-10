@@ -98,9 +98,7 @@
     ;; Now link the program
     (gl:link-program program-id)
     ;; And if we didn't get an error, create an object from the shader and store it for further use!
-    (setf (gethash shader-name *shaders*)
-          ;; (make-instance 'shader :name shader-name :program-id program-id)
-          (game-make-shader shader-name program-id))
+    (setf (gethash shader-name *shaders*) (game-make-shader shader-name program-id))
     (format t "New shader (~a) created!~%" shader-name)))
 
 
