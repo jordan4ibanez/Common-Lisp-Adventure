@@ -49,29 +49,33 @@
   (igl:game-use-shader "main")
   (format t "Hello, yes I am initialized!~%"))
 
+;; Game update function.
+;;note: Testing of window clear color
 (defvar scalar-thing 0.0)
 (defvar scalar-multiplier 0.25)
 (defvar up t)
+(defvar enable-flashing-debug nil)
 
-;; Game update function.
 (defun game-update()
   (delta:calculate-delta-time)
-  (let ((dtime (* (delta:get-delta) scalar-multiplier)))
-    (if up
-        (progn
-          (setf scalar-thing (+ scalar-thing dtime))
-          (if (>= scalar-thing 1.0)
-              (progn
-                (setf scalar-thing 1.0)
-                (setf up nil))))
+  (if enable-flashing-debug
+      (let ((dtime (* (delta:get-delta) scalar-multiplier)))
+        (if up
+            
+            (progn
+              (setf scalar-thing (+ scalar-thing dtime))
+              (if (>= scalar-thing 1.0)
+                  (progn
+                    (setf scalar-thing 1.0)
+                    (setf up nil))))
 
-        (progn
-          (setf scalar-thing (- scalar-thing dtime))
-          (if (<= scalar-thing 0.0)
-              (progn
-                (setf scalar-thing 0.0)
-                (setf up t)))))
-    (window:set-clear-color-scalar scalar-thing))
+            (progn
+              (setf scalar-thing (- scalar-thing dtime))
+              (if (<= scalar-thing 0.0)
+                  (progn
+                    (setf scalar-thing 0.0)
+                    (setf up t)))))
+        (window:set-clear-color-scalar scalar-thing)))
   (if (delta:fps-update)
       (window:set-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
 
