@@ -8,7 +8,8 @@
           game-use-shader
           game-get-shader
           game-delete-shader
-          game-has-shader))
+          game-has-shader
+          game-new-shader-uniform))
 
 ;; This is one of my java packages translated to lisp, might be sloppy!
 
@@ -30,6 +31,21 @@
 
 (defun game-get-shader-program-id (shader-name)
   (shader-program-id (game-get-shader shader-name)))
+
+(defun game-get-shader-uniforms (shader-name)
+  "Returns the hash table of the shader's uniforms"
+  (shader-uniforms (game-get-shader shader-name)))
+
+(defun game-new-shader-uniform (shader-name uniform-name)
+  (let* ((program-id (game-get-shader-program-id shader-name))
+         (uniform-location (gl:get-uniform-location program-id uniform-name)))
+    (if (< uniform-location 0)
+        (error "ERROR! Shader (~a) uniform (~a) does not exist! Got (~a)!~%" shader-name uniform-name uniform-location))
+    (setf (gethash uniform-name (game-get-shader-uniforms shader-name)) uniform-location)))
+
+(defun game-get-shader-uniform (shader-name uniform-name)
+  "Returns the uniform's location"
+  (gethash uniform-name (game-get-shader-uniforms shader-name)))
 
 (defun game-delete-shader (shader-name)
   (remhash shader-name *shaders*))
@@ -100,6 +116,10 @@
     ;; And if we didn't get an error, create an object from the shader and store it for further use!
     (setf (gethash shader-name *shaders*) (game-make-shader shader-name program-id))
     (format t "New shader (~a) created!~%" shader-name)))
+
+;; (defun game-create-uniform (shader-name uniform-name)
+;;   (let* ((program-id (game-get-shader-program-id shader-name))
+;;          (location (gl:get-uniform-location )))))
 
 
 ;; (format t "~a~%" (gethash "main" *shaders*))
