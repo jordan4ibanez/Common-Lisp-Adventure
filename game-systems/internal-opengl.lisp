@@ -28,6 +28,9 @@
 (defun game-get-shader (shader-name)
   (gethash shader-name *shaders*))
 
+(defun game-get-shader-program-id (shader-name)
+  (shader-program-id (game-get-shader shader-name)))
+
 (defun game-delete-shader (shader-name)
   (remhash shader-name *shaders*))
 
