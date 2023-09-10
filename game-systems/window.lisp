@@ -29,7 +29,10 @@
 
 (defun render ()
   (gl:clear-color (get-x *clear-color*) (get-y *clear-color*) (get-z *clear-color*) (get-w *clear-color*))
-  (gl:clear :color-buffer))
+  (gl:clear :color-buffer)
+;;note: This is just a debugging test, I don't recommend raw pushing matrices to your gl program lmao.
+  
+  )
   ;; (gl:with-pushed-matrix
     ;; (gl:color 0.1 0.1 0.1)
     ;; (gl:rect -25 -25 25 25)))
