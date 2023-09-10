@@ -47,15 +47,38 @@
   (set-viewport 600 400)
   (igl:game-new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
   (igl:game-use-shader "main")
-  (print "Hello, yes I am initialized!~%"))
+  (format t "Hello, yes I am initialized!~%"))
+
+(defvar scalar-thing 0.0)
+(defvar scalar-multiplier 0.25)
+(defvar up t)
 
 ;; Game update function.
 (defun game-update()
   (delta:calculate-delta-time)
+  (let ((dtime (* (delta:get-delta) scalar-multiplier)))
+    (if up
+        (progn
+          (setf scalar-thing (+ scalar-thing dtime))
+          (if (>= scalar-thing 1.0)
+              (progn
+                (setf scalar-thing 1.0)
+                (setf up nil))))
+
+        (progn
+          (setf scalar-thing (- scalar-thing dtime))
+          (if (<= scalar-thing 0.0)
+              (progn
+                (setf scalar-thing 0.0)
+                (setf up t)))))
+    (window:set-clear-color-scalar scalar-thing))
   (if (delta:fps-update)
-      (glfw:set-window-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
+      (window:set-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
 
 ;; (print (new-vec-from-list (loop for x in (to-list (new-vec 1 2 3)) collect (* x 2))))
+
+;; (window:set-clear-color 0.5 0.5 0.5)
+;; (window:clear-color 1.0 1.0 1.0 1.0)
 
 ;; This is run every frame of the game.
 (defun game-tick-procedure()
