@@ -24,7 +24,8 @@
     (set-window-should-close))
   (when (and (eq key :e) (eq action :press))
     (print "cool"))
-  (when t (print (format *standard-output* "~a | ~a" key action))))
+  (when t
+    (print (format *standard-output* "~a | ~a" key action))))
 
 (defun render ()
   (gl:clear-color (get-x *clear-color*) (get-y *clear-color*) (get-z *clear-color*) (get-w *clear-color*))
