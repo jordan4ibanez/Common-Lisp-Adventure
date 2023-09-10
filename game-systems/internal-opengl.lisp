@@ -40,7 +40,8 @@
   (let* ((program-id (game-get-shader-program-id shader-name))
          (uniform-location (gl:get-uniform-location program-id uniform-name)))
     (if (< uniform-location 0)
-        (error "ERROR! Shader (~a) uniform (~a) does not exist! Got (~a)!~%" shader-name uniform-name uniform-location))
+        (error (format t "ERROR! Shader (~a) uniform (~a) does not exist! Got (~a)!~%" shader-name uniform-name uniform-location))
+        (format t "Shader (~a) uniform (~a) at location (~a)~%" shader-name uniform-name uniform-location))
     (setf (gethash uniform-name (game-get-shader-uniforms shader-name)) uniform-location)))
 
 (defun game-get-shader-uniform (shader-name uniform-name)
@@ -136,7 +137,7 @@
 (defun game-use-shader (shader-name)
   (if (game-has-shader shader-name)
       (progn
-        (format t "Using shader (~a)" shader-name)
+        (format t "Using shader (~a)~%" shader-name)
         (let ((shader-struct (game-get-shader shader-name)))
           (format t "~a~%" shader-struct)
           (gl:use-program (shader-program-id shader-struct))))

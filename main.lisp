@@ -46,6 +46,7 @@
   (gl:clear-color 0 0 0 0)
   (set-viewport 600 400)
   (igl:game-new-shader "main" "shaders/vert.vert" "shaders/frag.frag")
+  (igl:game-new-shader-uniform "main" "cameraMatrix")
   (igl:game-use-shader "main")
   (format t "Hello, yes I am initialized!~%"))
 
