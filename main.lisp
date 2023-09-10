@@ -59,30 +59,28 @@
 (defvar enable-flashing-debug t)
 ;;WARNING: This crashes if you don't wait exactly one game cycle.
 ;;TODO: Figure out why?
-(defvar waited-one-frame F)
-
+;; (defvar waited-one-frame t)
 (defun game-update()
   (delta:calculate-delta-time)
-  (if waited-one-frame
-      (if enable-flashing-debug
-          (let ((dtime (* (delta:get-delta) scalar-multiplier)))
-            (if up
-                (progn
-                  (setf scalar-thing (+ scalar-thing dtime))
-                  (if (>= scalar-thing 1.0)
-                      (progn
-                        (setf scalar-thing 1.0)
-                        (setf up nil))))
+  (if enable-flashing-debug
+      (let ((dtime (* (delta:get-delta) scalar-multiplier)))
+        (if up
+            (progn
+              (setf scalar-thing (+ scalar-thing dtime))
+              (if (>= scalar-thing 1.0)
+                  (progn
+                    (setf scalar-thing 1.0)
+                    (setf up nil))))
 
-                (progn
-                  (setf scalar-thing (- scalar-thing dtime))
-                  (if (<= scalar-thing 0.0)
-                      (progn
-                        (setf scalar-thing 0.0)
-                        (setf up t)))))
-            ;; (print scalar-thing)
-            (window:set-clear-color-scalar scalar-thing)))
-      (setf waited-one-frame t))
+            (progn
+              (setf scalar-thing (- scalar-thing dtime))
+              (if (<= scalar-thing 0.0)
+                  (progn
+                    (setf scalar-thing 0.0)
+                    (setf up t)))))
+        ;; (print scalar-thing)
+        (window:set-clear-color-scalar scalar-thing)))
+  (setf waited-one-frame t)
   (if (delta:fps-update)
       (window:set-title (format nil "My Cool Game | FPS: ~a" (get-fps)))))
 
